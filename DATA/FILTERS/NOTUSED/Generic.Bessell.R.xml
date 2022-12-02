@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<VOTABLE version="1.1" xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <INFO name="QUERY_STATUS" value="OK"/>
+  <RESOURCE type="results">
+    <PARAM name="ID" ucd="meta.id;instr.filter" utype="phfdm:PhotometryFilter.uniqueIdentifier" unit="" value="Generic/Bessell.R" datatype="char" arraysize="*">
+       <DESCRIPTION>
+          
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthMean" ucd="em.wl" utype="phfdm:PhotometryFilter.meanWavelength" unit="Angstrom" value="6585.90688216" datatype="float" >
+       <DESCRIPTION>
+          Manually specified. See reference
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthEff" ucd="em.wl.effective" utype="phfdm:PhotometryFilter.effWavelength" unit="Angstrom" value="6414.19957623" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile and vega spectrum.
+          Defined as integ[x*filter(x)*vega(x) dx]/integ[filter(x)*vega(x) dx]
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthMin" ucd="em.wl;stat.min" utype="phfdm:PhotometryFilter.minWavelength" unit="Angstrom" value="5504.34782609" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile.
+          Defined as the first lambda value with a transmission at least 1% of maximum transmission
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthMax" ucd="em.wl;stat.max" utype="phfdm:PhotometryFilter.maxWavelength" unit="Angstrom" value="8833.33333333" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile.
+          Defined as the last lambda value with a transmission at least 1% of maximum transmission
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthCen" ucd="em.wl;" utype="phfdm:PhotometryFilter.centralWavelength" unit="Angstrom" value="6436.47058824" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile.
+          Defined the central wavelength between the two points defining FWMH
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WavelengthPeak" ucd="em.wl;" utype="phfdm:PhotometryFilter.peakWavelength" unit="Angstrom" value="6000" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile.
+          Defined as the lambda value with larger transmission
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="PhotSystem" ucd="" utype="phfdm:PhotometryFilter.photometricSystem" unit="" value="Bessell" datatype="char" arraysize="*">
+       <DESCRIPTION>
+          Photometric system
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="WidthEff" ucd="instr.bandwidth" utype="phfdm:PhotometryFilter.effectiveWidth" unit="Angstrom" value="1591.02942387" datatype="float" >
+       <DESCRIPTION>
+          Manually specified. See reference
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="FWMH" ucd="instr.bandwidth" utype="phfdm:PhotometryFilter.FWMH" unit="Angstrom" value="1567.05882353" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile.
+          Defined as the difference between the two wavelengths for which filter transmission is half maximum.
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="ZeroPoint" ucd="phot.mag;arith.zp" utype="phfdm:PhotometryFilter.zeroPoint" unit="Jy" value="2971.35075456" datatype="float" >
+       <DESCRIPTION>
+          Calculated by the service using filter profile and vega spectrum.
+          Defined as integ[filter(x)*vega(x) dx]/integ[filter(x) dx]
+       </DESCRIPTION>
+    </PARAM>
+    <PARAM name="Description" ucd="meta.note" utype="phfdm:PhotometryFilter.filterDescription" unit="" value="Bessell R generic filter" datatype="char" arraysize="*">
+       <DESCRIPTION>
+          
+       </DESCRIPTION>
+    </PARAM>
+    <TABLE>
+      <FIELD name="Wavelength" ucd="em.wl" unit="Angstrom" datatype="float"/>
+      <FIELD name="Transmission" ucd="phys.transmission" unit="" datatype="float"/>
+      <DATA>
+        <TABLEDATA>
+          <TR>
+            <TD>5500.0</TD>
+            <TD>0.0000000000</TD>
+          </TR>
+          <TR>
+            <TD>5600.0</TD>
+            <TD>0.2300000000</TD>
+          </TR>
+          <TR>
+            <TD>5700.0</TD>
+            <TD>0.7400000000</TD>
+          </TR>
+          <TR>
+            <TD>5800.0</TD>
+            <TD>0.9100000000</TD>
+          </TR>
+          <TR>
+            <TD>5900.0</TD>
+            <TD>0.9800000000</TD>
+          </TR>
+          <TR>
+            <TD>6000.0</TD>
+            <TD>1.0000000000</TD>
+          </TR>
+          <TR>
+            <TD>6100.0</TD>
+            <TD>0.9800000000</TD>
+          </TR>
+          <TR>
+            <TD>6200.0</TD>
+            <TD>0.9600000000</TD>
+          </TR>
+          <TR>
+            <TD>6300.0</TD>
+            <TD>0.9300000000</TD>
+          </TR>
+          <TR>
+            <TD>6400.0</TD>
+            <TD>0.9000000000</TD>
+          </TR>
+          <TR>
+            <TD>6500.0</TD>
+            <TD>0.8600000000</TD>
+          </TR>
+          <TR>
+            <TD>6600.0</TD>
+            <TD>0.8100000000</TD>
+          </TR>
+          <TR>
+            <TD>6700.0</TD>
+            <TD>0.7800000000</TD>
+          </TR>
+          <TR>
+            <TD>6800.0</TD>
+            <TD>0.7200000000</TD>
+          </TR>
+          <TR>
+            <TD>6900.0</TD>
+            <TD>0.6700000000</TD>
+          </TR>
+          <TR>
+            <TD>7000.0</TD>
+            <TD>0.6100000000</TD>
+          </TR>
+          <TR>
+            <TD>7100.0</TD>
+            <TD>0.5600000000</TD>
+          </TR>
+          <TR>
+            <TD>7200.0</TD>
+            <TD>0.5100000000</TD>
+          </TR>
+          <TR>
+            <TD>7300.0</TD>
+            <TD>0.4600000000</TD>
+          </TR>
+          <TR>
+            <TD>7400.0</TD>
+            <TD>0.4000000000</TD>
+          </TR>
+          <TR>
+            <TD>7500.0</TD>
+            <TD>0.3500000000</TD>
+          </TR>
+          <TR>
+            <TD>8000.0</TD>
+            <TD>0.1400000000</TD>
+          </TR>
+          <TR>
+            <TD>8500.0</TD>
+            <TD>0.0300000000</TD>
+          </TR>
+          <TR>
+            <TD>9000.0</TD>
+            <TD>0.0000000000</TD>
+          </TR>
+        </TABLEDATA>
+      </DATA>
+    </TABLE>
+  </RESOURCE>
+</VOTABLE>

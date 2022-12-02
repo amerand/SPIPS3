@@ -1,0 +1,569 @@
+J/A+A/554/A98   Limb-darkening coefficients for red giants      (Neilson+, 2013)
+================================================================================
+Spherically-symmetric model stellar atmospheres and limb darkening.
+I: Limb-darkening laws, gravity-darkening coefficients and angular diameter
+corrections for red giant stars.
+    Neilson H.R., Lester J.B.
+   <Astron. Astrophys. 554, A98 (2013)>
+   =2013A&A...554A..98N
+================================================================================
+ADC_Keywords: Models, atmosphere ; Stars, late-type ; Stars, giant ; 
+              Photometry, UBVRIJKLMNH
+Keywords: stars: atmospheres - stars: late-type - stars: binaries: eclipsing -
+          stars: evolution - techniques: interferometric
+
+Abstract:
+    Model stellar atmospheres are fundamental tools for understanding
+    stellar observations from interferometry, microlensing, eclipsing
+    binaries and planetary transits. However, the calculations also
+    include assumptions, such as the geometry of the model. We use
+    intensity profiles computed for both plane-parallel and spherically
+    symmetric model atmospheres to determine fitting coefficients in the
+    BVRIHK, CoRoT and Kepler wavebands for limb darkening using several
+    different fitting laws, for gravity-darkening and for interferometric
+    angular diameter corrections. Comparing predicted variables for each
+    geometry, we find that the spherically symmetric model geometry leads
+    to different predictions for surface gravities logg<3. In
+    particular, the most commonly used limb-darkening laws produce poor
+    fits to the intensity profiles of spherically symmetric model
+    atmospheres, which indicates the need for more sophisticated laws.
+    Angular diameter corrections for spherically symmetric models range
+    from 0.67 to 1, compared to the much smaller range from 0.95 to 1 for
+    plane-parallel models.
+
+Description:
+    Limb-darkening coefficients, interferometric angular diameter
+    corrections and gravity-darkening coefficients from plane-parallel and
+    spherically-symmetric Atlas/SAtlas model stellar atmospheres for the
+    Johnson-Cousins BVRIHK, CoRoT and Kepler wavebands. The model
+    atmosphere parameters range from Teff=3000-8000K, logg=(-2)-(+3) and
+    M=0.5-20 solar masses. Computed intensity profiles are also included
+    for each model and waveband.
+
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName     Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe           80        .   This file
+table2.dat       92     5300   Spherical linear limb-darkening coefficients
+table3.dat      164     5300   Spherical quadratic limb-darkening coefficients
+table4.dat      164     5300   Spherical square-root limb-darkening coefficients
+table5.dat      308     5300   Spherical 4-parameter limb-darkening coefficients
+table6.dat      164     5300   Spherical exponential limb-darkening coefficients
+table7.dat      164     5300   Spherical logarithmic limb-darkening coefficients
+table8.dat       85      560   Planar linear limb-darkening coefficients
+table9.dat      157      560   Planar quadratic limb-darkening coefficients
+table10.dat     157      560   Planar square-root limb-darkening coefficients
+table11.dat     301      560   Planar 4-parameter limb-darkening coefficients
+table12.dat     157      560   Planar exponential limb-darkening coefficients
+table13.dat     157      560   Planar logarithmic limb-darkening coefficients
+table14.dat     332     5300   Spherical Gravity-darkening coefficients
+table15.dat     325      560   Planar Gravity-darkening coefficients
+table16.dat      92     5300   Spherical interferometric angular diameter
+                                corrections
+table17.dat      92      560   Planar interferometric angular diameter
+                                corrections (M=0.0)
+listsph.dat      54     5300   List of individual intensity profiles in
+                                spherical subdirectory
+listpla.dat      36      560   List of individual intensity profiles in
+                                planar subdirectory
+spheric/*.dat     .     5300  *Individual intensity profiles for spherically
+                                symmetric model atmosphere
+planar/*.dat      .      560  *Individual intensity profiles for
+                                plane-parallel model atmosphere
+--------------------------------------------------------------------------------
+Note on spheric/*: File names as ld_satlas_surface.2tNNNNgNNNmNNN, where
+   tNNNN is the effective temperature, gNNN the surface gravity is and
+   mNNN the mass.
+Note on planar/*: File names as ld_tNNNNgNNN_surface.dat, where
+   tNNNN is the effective temperature and gNNN the surface gravity
+--------------------------------------------------------------------------------
+
+See also:
+ J/A+AS/110/329   : LTE model atmospheres coeff. (Diaz-cordoves+, 1995)
+ J/A+AS/114/247   : Limb-darkening coefficients for R I J H K (Claret+, 1995)
+ J/A+A/363/1081   : LTE models non-linear limb-darkening law (Claret, 2000)
+ J/A+A/401/657    : LTE models non-linear limb-darkening law. II (Claret, 2003)
+ J/A+A/405/1095   : ATLAS9 models limb-darkening coefficients (Barban+, 2003)
+ J/A+A/428/1001   : LTE models non-linear limb-darkening law. III (Claret, 2004)
+ J/A+A/510/A21    : Stellar Limb-Darkening Coefficients (Sing, 2010)
+ J/MNRAS/413/1515 : New grids of Atlas9 models (Howarth, 2011)
+ J/A+A/546/A14    : Limb-darkening for CoRoT, Kepler, Spitzer (Claret+, 2012)
+ J/A+A/552/A16    : Limb-darkening for CoRoT, Kepler, Spitzer. II (Claret+ 2013)
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-1/3] Model surface gravity
+  17- 20  F4.1  Msun    M       [0.5/20] Model mass
+  23- 29  F7.4  ---     u(B)    B-band linear u coefficient (G1)
+  32- 38  F7.4  ---     u(V)    V-band linear u coefficient (G1)
+  41- 47  F7.4  ---     u(R)    R-band linear u coefficient (G1)
+  50- 56  F7.4  ---     u(I)    I-band linear u coefficient (G1)
+  59- 65  F7.4  ---     u(H)    H-band linear u coefficient (G1)
+  68- 74  F7.4  ---     u(K)    K-band linear u coefficient (G1)
+  77- 83  F7.4  ---     u(CoR)  CoRoT-band linear u coefficient (G1)
+  86- 92  F7.4  ---     u(Kep)  Kepler-band linear u coefficient (G1)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units  Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K      Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2] logg    [-1/3] Model surface gravity
+  17- 20  F4.1  Msun   M       [0.5/20] Model mass
+  23- 29  F7.4  ---    a(B)    B-band quadratic a coefficient (G2)
+  32- 38  F7.4  ---    b(B)    B-band quadratic b coefficient (G2)
+  41- 47  F7.4  ---    a(V)    V-band quadratic a coefficient (G2)
+  50- 56  F7.4  ---    b(V)    V-band quadratic b coefficient (G2)
+  59- 65  F7.4  ---    a(R)    R-band quadratic a coefficient (G2)
+  68- 74  F7.4  ---    b(R)    R-band quadratic b coefficient (G2)
+  77- 83  F7.4  ---    a(I)    I-band quadratic a coefficient (G2)
+  86- 92  F7.4  ---    b(I)    I-band quadratic b coefficient (G2)
+  95-101  F7.4  ---    a(H)    H-band quadratic a coefficient (G2)
+ 104-110  F7.4  ---    b(H)    H-band quadratic b coefficient (G2)
+ 113-119  F7.4  ---    a(K)    K-band quadratic a coefficient (G2)
+ 122-128  F7.4  ---    b(K)    K-band quadratic b coefficient (G2)
+ 131-137  F7.4  ---    a(CoR)  CoRoT-band quadratic a coefficient (G2)
+ 140-146  F7.4  ---    b(CoR)  CoRoT-band quadratic b coefficient (G2)
+ 149-155  F7.4  ---    a(Kep)  Kepler-band quadratic a coefficient (G2)
+ 158-164  F7.4  ---    b(Kep)  Kelper-band quadratic b coefficient (G2)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table4.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label    Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff     [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg     [-1/3] Model surface gravity
+  17- 20  F4.1  Msun    M        [0.5/20] Model mass
+  23- 29  F7.4  ---     c(B)     B-band square-root c coefficient (G3)
+  32- 38  F7.4  ---     d(B)     B-band square-root d coefficient (G3)
+  41- 47  F7.4  ---     c(V)     V-band square-root c coefficient (G3)
+  50- 56  F7.4  ---     d(V)     V-band square-root d coefficient (G3)
+  59- 65  F7.4  ---     c(R)     R-band square-root c coefficient (G3)
+  68- 74  F7.4  ---     d(R)     R-band square-root d coefficient (G3)
+  77- 83  F7.4  ---     c(I)     I-band square-root c coefficient (G3)
+  86- 92  F7.4  ---     d(I)     I-band square-root d coefficient (G3)
+  95-101  F7.4  ---     c(H)     H-band square-root c coefficient (G3)
+ 104-110  F7.4  ---     d(H)     H-band square-root d coefficient (G3)
+ 113-119  F7.4  ---     c(K)     K-band square-root c coefficient (G3)
+ 122-128  F7.4  ---     d(K)     K-band square-root d coefficient (G3)
+ 131-137  F7.4  ---     c(CoR)   CoRoT-band square-root c coefficient (G3)
+ 140-146  F7.4  ---     d(CoR)   CoRoT-band square-root d coefficient (G3)
+ 147-155  F9.4  ---     c(Kep)   Kepler-band square-root c coefficient (G3)
+ 156-164  F9.4  ---     d(Kep)   Kepler-band square-root d coefficient (G3)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table5.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-1/3] Model surface gravity
+  17- 20  F4.1  Msun    M       [0.5/20] Model mass
+  23- 29  F7.4  ---     f1(B)   B-band four-parameter f_1_ coefficient (G4)
+  31- 38  F8.4  ---     f2(B)   B-band four-parameter f_2_ coefficient (G4)
+  40- 47  F8.4  ---     f3(B)   B-band four-parameter f_3_ coefficient (G4)
+  49- 56  F8.4  ---     f4(B)   B-band four-parameter f_4_ coefficient (G4)
+  59- 65  F7.4  ---     f1(V)   V-band four-parameter f_1_ coefficient (G4)
+  67- 74  F8.4  ---     f2(V)   V-band four-parameter f_2_ coefficient (G4)
+  76- 83  F8.4  ---     f3(V)   V-band four-parameter f_3_ coefficient (G4)
+  85- 92  F8.4  ---     f4(V)   V-band four-parameter f_4_ coefficient (G4)
+  95-101  F7.4  ---     f1(R)   R-band four-parameter f_1_ coefficient (G4)
+ 103-110  F8.4  ---     f2(R)   R-band four-parameter f_2_ coefficient (G4)
+ 112-119  F8.4  ---     f3(R)   R-band four-parameter f_3_ coefficient (G4)
+ 121-128  F8.4  ---     f4(R)   R-band four-parameter f_4_ coefficient (G4)
+ 131-137  F7.4  ---     f1(I)   I-band four-parameter f_1_ coefficient (G4)
+ 139-146  F8.4  ---     f2(I)   I-band four-parameter f_2_ coefficient (G4)
+ 148-155  F8.4  ---     f3(I)   I-band four-parameter f_3_ coefficient (G4)
+ 157-164  F8.4  ---     f4(I)   I-band four-parameter f_4_ coefficient (G4)
+ 167-173  F7.4  ---     f1(H)   H-band four-parameter f_1_ coefficient (G4)
+ 175-182  F8.4  ---     f2(H)   H-band four-parameter f_2_ coefficient (G4)
+ 184-191  F8.4  ---     f3(H)   H-band four-parameter f_3_ coefficient (G4)
+ 193-200  F8.4  ---     f4(H)   H-band four-parameter f_4_ coefficient (G4)
+ 202-209  F8.4  ---     f1(K)   K-band four-parameter f_1_ coefficient (G4)
+ 211-218  F8.4  ---     f2(K)   K-band four-parameter f_2_ coefficient (G4)
+ 220-227  F8.4  ---     f3(K)   K-band four-parameter f_3_ coefficient (G4)
+ 229-236  F8.4  ---     f4(K)   K-band four-parameter f_4_ coefficient (G4)
+ 239-245  F7.4  ---     f1(CoR) CoRoT-band four-parameter f_1_ coefficient (G4)
+ 247-254  F8.4  ---     f2(CoR) CoRoT-band four-parameter f_2_ coefficient (G4)
+ 256-263  F8.4  ---     f3(CoR) CoRoT-band four-parameter f_3_ coefficient (G4)
+ 265-272  F8.4  ---     f4(CoR) CoRoT-band four-parameter f_4_ coefficient (G4)
+ 275-281  F7.4  ---     f1(Kep) Kepler-band four-parameter f_1_ coefficient (G4)
+ 283-290  F8.4  ---     f2(Kep) Kepler-band four-parameter f_2_ coefficient (G4)
+ 292-299  F8.4  ---     f3(Kep) Kepler-band four-parameter f_3_ coefficient (G4)
+ 301-308  F8.4  ---     f4(Kep) Kepler-band four-parameter f_4_ coefficient (G4)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table6.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-1/3] Model surface gravity
+  17- 20  F4.1  Msun    M       [0.5/20] Model mass
+  23- 29  F7.4  ---     g(B)    B-band exponential g coefficient (G5)
+  32- 38  F7.4  ---     h(B)    B-band exponential h coefficient (G5)
+  41- 47  F7.4  ---     g(V)    V-band exponential g coefficient (G5)
+  50- 56  F7.4  ---     h(V)    V-band exponential h coefficient (G5)
+  59- 65  F7.4  ---     g(R)    R-band exponential g coefficient (G5)
+  68- 74  F7.4  ---     h(R)    R-band exponential h coefficient (G5)
+  77- 83  F7.4  ---     g(I)    I-band exponential g coefficient (G5)
+  86- 92  F7.4  ---     h(I)    I-band exponential h coefficient (G5)
+  95-101  F7.4  ---     g(H)    H-band exponential g coefficient (G5)
+ 104-110  F7.4  ---     h(H)    H-band exponential h coefficient (G5)
+ 113-119  F7.4  ---     g(K)    K-band exponential g coefficient (G5)
+ 122-128  F7.4  ---     h(K)    K-band exponential h coefficient (G5)
+ 131-137  F7.4  ---     g(CoR)  CoRoT-band exponential g coefficient (G5)
+ 140-146  F7.4  ---     h(CoR)  CoRoT-band exponential h coefficient (G5)
+ 149-155  F7.4  ---     g(Kep)  Kepler-band exponential g coefficient (G5)
+ 158-164  F7.4  ---     h(Kep)  Kepler-band exponential h coefficient (G5)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table7.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-1/3] Model surface gravity
+  17- 20  F4.1  Msun    M       [0.5/20] Model mass
+  23- 29  F7.4  ---     m(B)    B-band logarithmic m coefficient (G6)
+  32- 38  F7.4  ---     n(B)    B-band logarithmic n coefficient (G6)
+  41- 47  F7.4  ---     m(V)    V-band logarithmic m coefficient (G6)
+  50- 56  F7.4  ---     n(V)    V-band logarithmic n coefficient (G6)
+  59- 65  F7.4  ---     m(R)    R-band logarithmic m coefficient (G6)
+  68- 74  F7.4  ---     n(R)    R-band logarithmic n coefficient (G6)
+  77- 83  F7.4  ---     m(I)    I-band logarithmic m coefficient (G6)
+  86- 92  F7.4  ---     n(I)    I-band logarithmic n coefficient (G6)
+  95-101  F7.4  ---     m(H)    H-band logarithmic m coefficient (G6)
+ 104-110  F7.4  ---     n(H)    H-band logarithmic n coefficient (G6)
+ 113-119  F7.4  ---     m(K)    K-band logarithmic m coefficient (G6)
+ 122-128  F7.4  ---     n(K)    K-band logarithmic n coefficient (G6)
+ 131-137  F7.4  ---     m(CoR)  CoRoT-band logarithmic m coefficient (G6)
+ 140-146  F7.4  ---     n(CoR)  CoRoT-band logarithmic n coefficient (G6)
+ 149-155  F7.4  ---     m(Kep)  Kepler-band logarithmic m coefficient (G6)
+ 158-164  F7.4  ---     n(Kep)  Kepler-band logarithmic n coefficient (G6)
+--------------------------------------------------------------------------------
+ 
+Byte-by-byte Description of file: table8.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     u(B)    B-band linear u coefficient (G1)
+  25- 31  F7.4  ---     u(V)    V-band linear u coefficient (G1)
+  34- 40  F7.4  ---     u(R)    R-band linear u coefficient (G1)
+  43- 49  F7.4  ---     u(I)    I-band linear u coefficient (G1)
+  52- 58  F7.4  ---     u(H)    H-band linear u coefficient (G1)
+  61- 67  F7.4  ---     u(K)    K-band linear u coefficient (G1)
+  70- 76  F7.4  ---     u(CoR)  CoRoT-band linear u coefficient (G1)
+  79- 85  F7.4  ---     u(Kep)  Kepler-band linear u coefficient (G1)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table9.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     a(B)    B-band quadratic a coefficient (G2)
+  25- 31  F7.4  ---     b(B)    B-band quadratic b coefficient (G2)
+  34- 40  F7.4  ---     a(V)    V-band quadratic a coefficient (G2)
+  43- 49  F7.4  ---     b(V)    V-band quadratic b coefficient (G2)
+  52- 58  F7.4  ---     a(R)    R-band quadratic a coefficient (G2)
+  61- 67  F7.4  ---     b(R)    R-band quadratic b coefficient (G2)
+  70- 76  F7.4  ---     a(I)    I-band quadratic a coefficient (G2)
+  79- 85  F7.4  ---     b(I)    I-band quadratic b coefficient (G2)
+  88- 94  F7.4  ---     a(H)    H-band quadratic a coefficient (G2)
+  97-103  F7.4  ---     b(H)    H-band quadratic b coefficient (G2)
+ 106-112  F7.4  ---     a(K)    K-band quadratic a coefficient (G2)
+ 115-121  F7.4  ---     b(K)    K-band quadratic b coefficient (G2)
+ 124-130  F7.4  ---     a(CoR)  CoRoT-band quadratic a coefficient (G2)
+ 133-139  F7.4  ---     b(CoR)  CoRoT-band quadratic b coefficient (G2)
+ 142-148  F7.4  ---     a(Kep)  Kepler-band quadratic a coefficient (G2)
+ 151-157  F7.4  ---     b(Kep)  Kepler-band quadratic b coefficient (G2)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table10.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     c(B)    B-band square-root c coefficient (G3)
+  25- 31  F7.4  ---     d(B)    B-band square-root d coefficient (G3)
+  34- 40  F7.4  ---     c(V)    V-band square-root c coefficient (G3)
+  43- 49  F7.4  ---     d(V)    V-band square-root d coefficient (G3)
+  52- 58  F7.4  ---     c(R)    R-band square-root c coefficient (G3)
+  61- 67  F7.4  ---     d(R)    R-band square-root d coefficient (G3)
+  70- 76  F7.4  ---     c(I)    I-band square-root c coefficient (G3)
+  79- 85  F7.4  ---     d(I)    I-band square-root d coefficient (G3)
+  88- 94  F7.4  ---     c(H)    H-band square-root c coefficient (G3)
+  97-103  F7.4  ---     d(H)    H-band square-root d coefficient (G3)
+ 106-112  F7.4  ---     c(K)    K-band square-root c coefficient (G3)
+ 115-121  F7.4  ---     d(K)    K-band square-root d coefficient (G3)
+ 124-130  F7.4  ---     c(CoR)  CoRoT-band square-root c coefficient (G3)
+ 133-139  F7.4  ---     d(CoR)  CoRoT-band square-root d coefficient (G3)
+ 142-148  F7.4  ---     c(Kep)  Kepler-band square-root c coefficient (G3)
+ 151-157  F7.4  ---     d(Kep)  Kepler-band square-root d coefficient (G3)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table11.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     f1(B)   B-band four-parameter f_1_ coefficient (G4)
+  25- 31  F7.4  ---     f2(B)   B-band four-parameter f_2_ coefficient (G4)
+  34- 40  F7.4  ---     f3(B)   B-band four-parameter f_3_ coefficient (G4)
+  43- 49  F7.4  ---     f4(B)   B-band four-parameter f_4_ coefficient (G4)
+  52- 58  F7.4  ---     f1(V)   V-band four-parameter f_1_ coefficient (G4)
+  61- 67  F7.4  ---     f2(V)   V-band four-parameter f_2_ coefficient (G4)
+  70- 76  F7.4  ---     f3(V)   V-band four-parameter f_3_ coefficient (G4)
+  79- 85  F7.4  ---     f4(V)   V-band four-parameter f_4_ coefficient (G4)
+  88- 94  F7.4  ---     f1(R)   K-band four-parameter f_1_ coefficient (G4)
+  97-103  F7.4  ---     f2(R)   K-band four-parameter f_2_ coefficient (G4)
+ 106-112  F7.4  ---     f3(R)   K-band four-parameter f_3_ coefficient (G4)
+ 115-121  F7.4  ---     f4(R)   K-band four-parameter f_4_ coefficient (G4)
+ 124-130  F7.4  ---     f1(I)   I-band four-parameter f_1_ coefficient (G4)
+ 133-139  F7.4  ---     f2(I)   I-band four-parameter f_2_ coefficient (G4)
+ 142-148  F7.4  ---     f3(I)   I-band four-parameter f_3_ coefficient (G4)
+ 151-157  F7.4  ---     f4(I)   I-band four-parameter f_4_ coefficient (G4)
+ 160-166  F7.4  ---     f1(H)   H-band four-parameter f_1_ coefficient (G4)
+ 169-175  F7.4  ---     f2(H)   H-band four-parameter f_2_ coefficient (G4)
+ 178-184  F7.4  ---     f3(H)   H-band four-parameter f_3_ coefficient (G4)
+ 187-193  F7.4  ---     f4(H)   H-band four-parameter f_4_ coefficient (G4)
+ 196-202  F7.4  ---     f1(K)   K-band four-parameter f_1_ coefficient (G4)
+ 205-211  F7.4  ---     f2(K)   K-band four-parameter f_2_ coefficient (G4)
+ 214-220  F7.4  ---     f3(K)   K-band four-parameter f_3_ coefficient (G4)
+ 223-229  F7.4  ---     f4(k)   K-band four-parameter f_4_ coefficient (G4)
+ 232-238  F7.4  ---     f1(CoR) CoRoT-band four-parameter f_1_ coefficient (G4)
+ 241-247  F7.4  ---     f2(CoR) CoRoT-band four-parameter f_2_ coefficient (G4)
+ 250-256  F7.4  ---     f3(CoR) CoRoT-band four-parameter f_3_ coefficient (G4)
+ 259-265  F7.4  ---     f4(CoR) CoRoT-band four-parameter f_4_ coefficient (G4)
+ 268-274  F7.4  ---     f1(Kep) Kepler-band four-parameter f_1_ coefficient (G4)
+ 277-283  F7.4  ---     f2(Kep) Kepler-band four-parameter f_2_ coefficient (G4)
+ 286-292  F7.4  ---     f3(Kep) Kepler-band four-parameter f_3_ coefficient (G4)
+ 295-301  F7.4  ---     f4(Kep) Kepler-band four-parameter f_4_ coefficient (G4)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table12.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     g(B)    B-band exponential g coefficient (G5)
+  25- 31  F7.4  ---     h(B)    B-band exponential h coefficient (G5)
+  34- 40  F7.4  ---     g(V)    V-band exponential g coefficient (G5)
+  43- 49  F7.4  ---     h(V)    V-band exponential h coefficient (G5)
+  52- 58  F7.4  ---     g(R)    R-band exponential g coefficient (G5)
+  61- 67  F7.4  ---     h(R)    R-band exponential h coefficient (G5)
+  70- 76  F7.4  ---     g(I)    I-band exponential g coefficient (G5)
+  79- 85  F7.4  ---     h(I)    I-band exponential h coefficient (G5)
+  88- 94  F7.4  ---     g(H)    H-band exponential g coefficient (G5)
+  97-103  F7.4  ---     h(H)    H-band exponential h coefficient (G5)
+ 106-112  F7.4  ---     g(K)    K-band exponential g coefficient (G5)
+ 115-121  F7.4  ---     h(K)    K-band exponential h coefficient (G5)
+ 124-130  F7.4  ---     g(CoR)  CoRoT-band exponential g coefficient (G5)
+ 133-139  F7.4  ---     h(CoR)  CoRoT-band exponential h coefficient (G5)
+ 142-148  F7.4  ---     g(Kep)  Kepler-band exponential g coefficient (G5)
+ 151-157  F7.4  ---     h(Kep)  Kepler-band exponential h coefficient (G5)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table13.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff    [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg    [-2.25/3] Model surface gravity
+  16- 22  F7.4  ---     m(B)    B-band logarithmic m coefficient (G6)
+  25- 31  F7.4  ---     n(B)    B-band logarithmic n coefficient (G6)
+  34- 40  F7.4  ---     m(V)    V-band logarithmic m coefficient (G6)
+  43- 49  F7.4  ---     n(V)    V-band logarithmic n coefficient (G6)
+  52- 58  F7.4  ---     m(R)    R-band logarithmic m coefficient (G6)
+  61- 67  F7.4  ---     n(R)    R-band logarithmic n coefficient (G6)
+  70- 76  F7.4  ---     m(I)    I-band logarithmic m coefficient (G6)
+  79- 85  F7.4  ---     n(I)    I-band logarithmic n coefficient (G6)
+  88- 94  F7.4  ---     m(H)    H-band logarithmic m coefficient (G6)
+  97-103  F7.4  ---     n(H)    H-band logarithmic n coefficient (G6)
+ 106-112  F7.4  ---     m(K)    K-band logarithmic m coefficient (G6)
+ 115-121  F7.4  ---     n(K)    K-band logarithmic n coefficient (G6)
+ 124-130  F7.4  ---     m(CoR)  CoRoT-band logarithmic m coefficient (G6)
+ 133-139  F7.4  ---     n(CoR)  CoRoT-band logarithmic n coefficient (G6)
+ 142-148  F7.4  ---     m(Kep)  Kepler-band logarithmic m coefficient (G6)
+ 151-157  F7.4  ---     n(Kep)  Kepler-band logarithmic n coefficient (G6)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table14.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff      [3000/8000] Model effective temperature
+   7- 13  F7.2 [cm/s2]  logg      [-1/3] Model surface gravity
+  14- 20  F7.1  Msun    M         [0.5/20] Model mass
+  22- 34  E13.4 ----    IT(B)     ?=- B-band derivative, d(lnI)/d(lnT)
+  35- 47  E13.4 ----    Ig(B)     ?=- B-band derivative, d(lnI)/d(lng)
+  48- 60  E13.4 ----    y(B)      ?=- Gravity-darkening coefficient
+  61- 73  E13.4 ----    IT(V)     ?=- V-band derivative, d(lnI)/d(lnT)
+  74- 86  E13.4 ----    Ig(V)     ?=- V-band derivative, d(lnI)/d(lng)
+  87- 99  E13.4 ----    y(V)      ?=- Gravity-darkening coefficient
+ 100-112  E13.4 ----    IT(R)     ?=- R-band derivative, d(lnI)/d(lnT)
+ 113-125  E13.4 ----    Ig(R)     ?=- R-band derivative, d(lnI)/d(lng)
+ 126-138  E13.4 ----    y(R)      ?=- Gravity-darkening coefficient
+ 139-151  E13.4 ----    IT(I)     ?=- I-band derivative, d(lnI)/d(lnT)
+ 152-164  E13.4 ----    Ig(I)     ?=- I-band derivative, d(lnI)/d(lng)
+ 165-177  E13.4 ----    y(I)      ?=- Gravity-darkening coefficient
+ 178-190  E13.4 ----    IT(H)     ?=- H-band derivative, d(lnI)/d(lnT)
+ 191-203  E13.4 ----    Ig(H)     ?=- H-band derivative, d(lnI)/d(lng)
+ 204-216  E13.4 ----    y(H)      ?=- Gravity-darkening coefficient
+ 217-229  E13.4 ----    IT(K)     ?=- K-band derivative, d(lnI)/d(lnT)
+ 230-242  E13.4 ----    Ig(K)     ?=- K-band derivative, d(lnI)/d(lng)
+ 243-255  E13.4 ----    y(K)      ?=- Gravity-darkening coefficient
+ 256-268  E13.4 ----    IT(CoR)   ?=- CoRoT-band derivative, d(lnI)/d(lnT)
+ 269-281  E13.4 ----    Ig(CoR)   ?=- CoRoT-band derivative, d(lnI)/d(lng)
+ 282-294  E13.4 ----    y(CoR)    ?=- Gravity-darkening coefficient
+ 295-307  E13.4 ----    IT(Kep)   ?=- Kepler-band derivative, d(lnI)/d(lnT)
+ 308-320  E13.4 ----    Ig(Kep)   ?=- Kepler-band derivative, d(lnI)/d(lng)
+ 321-332  E12.4 ----    y(Kep)    ?=- Gravity-darkening coefficient
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table15.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff      [3000/8000] Model effective temperature
+   7- 13  F7.2 [cm/s2]  logg      [-2.25/3] Model surface gravity
+  14- 26  E13.4 ----    IT(B)     B-band derivative, d(lnI)/d(lnT)
+  27- 39  E13.4 ----    Ig(B)     B-band derivative, d(lnI)/d(lng)
+  40- 52  E13.4 ----    y(B)      Gravity-darkening coefficient
+  53- 65  E13.4 ----    IT(V)     V-band derivative, d(lnI)/d(lnT)
+  66- 78  E13.4 ----    Ig(V)     V-band derivative, d(lnI)/d(lng)
+  79- 91  E13.4 ----    y(V)      Gravity-darkening coefficient
+  92-104  E13.4 ----    IT(R)     R-band derivative, d(lnI)/d(lnT)
+ 105-117  E13.4 ----    Ig(R)     R-band derivative, d(lnI)/d(lng)
+ 118-130  E13.4 ----    y(R)      Gravity-darkening coefficient
+ 131-143  E13.4 ----    IT(I)     I-band derivative, d(lnI)/d(lnT)
+ 144-156  E13.4 ----    Ig(I)     I-band derivative, d(lnI)/d(lng)
+ 157-169  E13.4 ----    y(I)      Gravity-darkening coefficient
+ 170-182  E13.4 ----    IT(H)     H-band derivative, d(lnI)/d(lnT)
+ 183-195  E13.4 ----    Ig(H)     H-band derivative, d(lnI)/d(lng)
+ 196-208  E13.4 ----    y(H)      Gravity-darkening coefficient
+ 209-221  E13.4 ----    IT(K)     K-band derivative, d(lnI)/d(lnT)
+ 222-234  E13.4 ----    Ig(K)     K-band derivative, d(lnI)/d(lng)
+ 235-247  E13.4 ----    y(K)      Gravity-darkening coefficient
+ 248-260  E13.4 ----    IT(CoR)   CoRoT-band derivative, d(lnI)/d(lnT)
+ 261-273  E13.4 ----    Ig(CoR)   CoRoT-band derivative, d(lnI)/d(lng)
+ 274-286  E13.4 ----    y(CoR)    Gravity-darkening coefficient
+ 287-299  E13.4 ----    IT(Kep)   Kepler-band derivative, d(lnI)/d(lnT)
+ 300-312  E13.4 ----    Ig(Kep)   Kepler-band derivative, d(lnI)/d(lng)
+ 313-325  E13.4 ----    y(Kep)    Gravity-darkening coefficient
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table1[67].dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   3-  6  I4    K       Teff      [3000/8000] Model effective temperature
+   9- 13  F5.2 [cm/s2]  logg      [-2.25/3] Model surface gravity
+  17- 20  F4.1  Msun    M         [0/20] Model mass
+  24- 29  F6.4  ----    kLD(B)    B-band interferometric angular diameter
+                                   correction
+  33- 38  F6.4  ----    kLD(V)    V-band interferometric angular diameter
+                                   correction
+  42- 47  F6.4  ----    kLD(R)    R-band interferometric angular diameter
+                                   correction
+  51- 56  F6.4  ----    kLD(I)    I-band interferometric angular diameter
+                                   correction
+  60- 65  F6.4  ----    kLD(H)    H-band interferometric angular diameter
+                                   correction
+  69- 74  F6.4  ----    kLD(K)    K-band interferometric angular diameter
+                                   correction
+  78- 83  F6.4  ----    kLD(CoR)  CoRoT-band interferometric angular diameter
+                                   correction
+  87- 92  F6.4  ----    kLD(Kep)  Kepler-band interferometric angular diameter
+                                   correction
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: listsph.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  4  I4    K       Teff      [3000/8000] Model effective temperature
+   6- 10  F5.2  [cm/s2] logg      [-1/3] Model surface gravity
+  13- 16  F4.1  Msun    M         [0.5/20] Model mass
+  18- 54  A37   ---     FileName  Name of the file in subdirectory spheric
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: listpla.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1-  4  I4    K       Teff      [3000/8000] Model effective temperature
+   6- 10  F5.2  [cm/s2] logg      [-2.25/3] Model surface gravity
+  12- 36  A25   ---     FileName  Name of the file in subdirectory planar
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: spheric/*.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units  Label     Explanations
+--------------------------------------------------------------------------------
+   1- 15  E15.7 ----   mu        [0/1] {mu}=cos({theta}), where {theta} is the
+                                  angle between the direction to the distant
+                                  observer and the normal direction at each
+                                  location on the stellar surface
+  16- 30  E15.7 ----   IB(mu)    B-band normalized intensity
+  31- 45  E15.7 ----   IV(mu)    V-band normalized intensity
+  46- 60  E15.7 ----   IR(mu)    R-band normalized intensity
+  61- 75  E15.7 ----   II(mu)    I-band normalized intensity
+  76- 90  E15.7 ----   IH(mu)    H-band normalized intensity
+  91-105  E15.7 ----   IK(mu)    K-band normalized intensity
+ 106-120  E15.7 ----   ICoR(mu)  ? CoRoT-band normalized intensity
+ 121-135  E15.7 ----   IKep(mu)  ? Kepler-band normalized intensity
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: planar/*.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label     Explanations
+--------------------------------------------------------------------------------
+   1- 20 E20.10 ----    mu        [0/1] {mu}=cos({theta}), where {theta} is the
+                                   angle between the direction to the distant
+                                   observer and the normal direction at each
+                                   location on the stellar surface
+  21- 40 E20.10 ----    IB(mu)    B-band normalized intensity
+  41- 60 E20.10 ----    IV(mu)    V-band normalized intensity
+  61- 80 E20.10 ----    IR(mu)    R-band normalized intensity
+  81-100 E20.10 ----    II(mu)    I-band normalized intensity
+ 101-120 E20.10 ----    IH(mu)    H-band normalized intensity
+ 121-140 E20.10 ----    IK(mu)    K-band normalized intensity
+ 141-160 E20.10 ----    ICoR(mu)  CoRoT-band normalized intensity
+ 161-180 E20.10 ----    IKep(mu)  Kepler-bandnormalized intensity
+--------------------------------------------------------------------------------
+
+Golbal Notes:
+Note (G1): in the linear model:
+     I({mu})/I(1) = 1 - u(1-{mu})
+Note (G2): in the quadratic model:
+     I({mu})/I(1) = 1 - a(1-{mu}) - b(1-{mu})^2^
+Note (G3): in the square-root model:
+     I({mu})/I(1) = 1 - c(1-{mu}) - d(1-sqrt({mu}))
+Note (G4): in the four-parameter model:
+     I({mu})/I(1) = 1 - f_1_(1-{mu}^1/2^) - f_2_(1-{mu})
+                      - f_3_(1-{mu}^3/2^) - f_4_(1-{mu}^2^)
+Note (G5): in the exponential model:
+     I({mu})/I(1) = 1 - g(1-{mu}) - h/(1-exp({mu}))
+Note (G6): in the logarithmic model:
+     I({mu})/I(1) = 1 - m(1-{mu}) - m{mu}ln{mu}
+
+Acknowledgements:
+    Hilding Neilson, neilsonh(at)etsu.edu
+
+================================================================================
+(End)                                        Patricia Vannier [CDS]  06-May-2013
