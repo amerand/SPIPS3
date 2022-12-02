@@ -12,14 +12,14 @@ import os, sys
 import numpy as np
 import urllib.request, urllib.error, urllib.parse
 
-_dir = '../SPIPS/DATA/FILTERS' # will automatically loads all filters from there
+_dir = '../SPIPS3/DATA/FILTERS' # will automatically loads all filters from there
 if not os.path.exists(_dir):
-    _dir = os.path.join([d for d in sys.path if d.endswith('/SPIPS')][0], 'DATA/FILTERS/')
+    _dir = os.path.join([d for d in sys.path if d.endswith('/SPIPS3')][0], 'DATA/FILTERS/')
 
 
 if not os.path.isdir(_dir):
     import sys
-    rotastarDir =[x for x in sys.path if 'SPIPS' in x]
+    rotastarDir =[x for x in sys.path if 'SPIPS3' in x]
     if len(rotastarDir)==1:
         _dir = os.path.join(rotastarDir[0], _dir)
         print('\033[43m', _dir, '\033[0m')
@@ -179,9 +179,9 @@ def _atmoTrans(wl, expo=1.5):
     try:
         n = len(_atmoData)
     except:
-        _ad = '../SPIPS/DATA/ATMO/'
+        _ad = '../SPIPS3/DATA/ATMO/'
         if not os.path.exists(_ad):
-            _ad = os.path.join([d for d in sys.path if d.endswith('/SPIPS')][0], 'DATA/ATMO/')
+            _ad = os.path.join([d for d in sys.path if d.endswith('/SPIPS3')][0], 'DATA/ATMO/')
 
         f = open(os.path.join(_ad, 'transmission_300_5000_pwv10.txt'))
         _atmoData = []

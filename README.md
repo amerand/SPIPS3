@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a python3.10 (replacing the old 2.7 version) implementation of a parallax of pulsation method for Cepheids stars, described in [Mérand et al. (Astronomy & Astrophysics 584-80, 2015)](http://adsabs.harvard.edu/abs/2015A%26A...584A..80M). Papers published with SPIPS are available on [ADS](https://ui.adsabs.harvard.edu/search/filter_property_fq_property=AND&filter_property_fq_property=property%3A%22refereed%22&fq=%7B!type%3Daqp%20v%3D%24fq_property%7D&fq_property=(property%3A%22refereed%22)&q=%20full%3A%22SPIPS%22%20year%3A2015-2050%20author%3A%22M%C3%A9rand%22&sort=date%20desc%2C%20bibcode%20desc&p_=0).
+This is a python3.10 (replacing the old 2.7 version) implementation of a parallax of pulsation method for Cepheids stars, described in [Mérand et al. (Astronomy & Astrophysics 584-80, 2015)](http://adsabs.harvard.edu/abs/2015A%26A...584A..80M). As of November 2022, [17 refereed articles](https://ui.adsabs.harvard.edu/search/filter_property_fq_property=AND&filter_property_fq_property=property%3A%22refereed%22&fq=%7B!type%3Daqp%20v%3D%24fq_property%7D&fq_property=(property%3A%22refereed%22)&q=%20full%3A%22SPIPS%22%20year%3A2015-2050%20author%3A%22M%C3%A9rand%22&sort=date%20desc%2C%20bibcode%20desc&p_=0) have been published with SPIPS.
 
 
 ## Quick Start / Example

@@ -59,9 +59,9 @@ print(' > SED models models:', __SEDmodel)
 
 __monochromaticAlambda = False
 
-_dir_data = '../SPIPS/DATA/'
+_dir_data = '../SPIPS3/DATA/'
 for d in sys.path:
-    if os.path.isdir(d) and 'SPIPS' in d:
+    if os.path.isdir(d) and 'SPIPS3' in d:
         _dir_data = os.path.join(d, 'DATA')
         print('\033[43m', _dir_data, '\033[0m')
 
@@ -3419,7 +3419,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         hdu.header['AUTHOR'] = getpass.getuser()
         hdu.header['RUNDATE'] = time.asctime()
         hdu.header['COMMENT'] = 'generated with SPIPS: spectrophoto-interferometry of pulsating stars'
-        hdu.header['COMMENT'] = 'https://github.com/amerand/SPIPS'
+        hdu.header['COMMENT'] = 'https://github.com/amerand/SPIPS3'
         if not starName is None:
             hdu.header['STARNAME'] = starName
         for k in np.sort(list(a.keys())):

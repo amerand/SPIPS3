@@ -12,14 +12,14 @@ import sys
 from scipy.interpolate import interp1d
 
 """
-ldsatlas._udld('../SPIPS/DATA/LD_NEILSON/GIANTS/spheric/ld_satlas_surface.2t5700g100m100.dat', plot=1)
+ldsatlas._udld('../SPIPS3/DATA/LD_NEILSON/GIANTS/spheric/ld_satlas_surface.2t5700g100m100.dat', plot=1)
 ldsatlas._udld_B74(0.5)
 """
 
-_data_dir = '../SPIPS/DATA/'
+_data_dir = '../SPIPS3/DATA/'
 
 for d in sys.path:
-    if os.path.isdir(d) and 'SPIPS' in d:
+    if os.path.isdir(d) and 'SPIPS3' in d:
         _data_dir = os.path.join(d, 'DATA')
         print('\033[43m', _data_dir, '\033[0m')
 
@@ -203,7 +203,7 @@ try:
 except:
     C4 = {}
 
-if C4=={} and os.path.exists('../SPIPS/DATA/LD_CLARET/tableeq5.dat'):
+if C4=={} and os.path.exists('../SPIPS3/DATA/LD_CLARET/tableeq5.dat'):
     #print 'reading Claret+ 2011 4-coef table'
     f = open(os.path.join(_data_dir, 'LD_CLARET/tableeq5.dat'))
     for l in f.readlines():

@@ -23,9 +23,9 @@ AUTHOR: Antoine MERAND (2011-2017)
 """
 import os, sys
 
-_dir_data = '../SPIPS/DATA/'
+_dir_data = '../SPIPS3/DATA/'
 for d in sys.path:
-    if os.path.isdir(d) and 'SPIPS' in d:
+    if os.path.isdir(d) and 'SPIPS3' in d:
         _data_dir = os.path.join(d, 'DATA')
         print('\033[43m', _data_dir, '\033[0m')
 
@@ -702,11 +702,11 @@ def getAllFiles(directory='gridp00k2odfnew', table=None, TeffMax=12000, TeffMin=
             f.write(tmp)
             f.close()
     try:
-        os.remove('../SPIPS/DATA/BW2_maggrid_atlas9.dpy')
+        os.remove('../SPIPS3/DATA/BW2_maggrid_atlas9.dpy')
     except:
         pass
     try:
-        os.remove('../SPIPS/DATA/BW2_ATLAS9_aLambdaSPE.dpy')
+        os.remove('../SPIPS3/DATA/BW2_ATLAS9_aLambdaSPE.dpy')
     except:
         pass
     return
