@@ -9,7 +9,7 @@ This is a python3.10 (replacing the old 2.7 version) implementation of a paralla
 
 Quick Start:
  - download all files
- - in python3: `import delta_cep.py`
+ - in python3: `import delta_cep`
    - this will load spips.py
    - first time you load spips.py, lots of models will be downloaded: [ATLAS9 models](http://wwwuser.oats.inaf.it/castelli/grids.html) and [SATLAS models](http://cdsarc.u-strasbg.fr/viz-bin/Cat?J/A%2bA/554/A98).
  - run `delta_cep.show(delta_cep.p_fourier)` to show the model with Fourier parameters
