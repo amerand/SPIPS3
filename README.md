@@ -8,7 +8,7 @@ The code fits photometric measurement (including colors), radial velocities and 
 
 An example below of several galactic Cepheids in the radius/effective temperature diagram, based on the sample of [Trahin et al. (2021)](https://ui.adsabs.harvard.edu/abs/2021A%26A...656A.102T/abstract). Dots are average values, and the light lines are the actual variations during the pulsation. This sample was used to generate templates to fit extragalactic Cepheids' light curves in [Javanmardi et al. (2021)](https://ui.adsabs.harvard.edu/abs/2021ApJ...911...12J/abstract). 
 
-![RTdiagram](RTdiagram_template_stars.png | width=300)
+![RTdiagram](RTdiagram_template_stars.png)
 
 ## Quick Start / Example
 
