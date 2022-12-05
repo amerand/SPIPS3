@@ -2,8 +2,13 @@
 
 ## What is this?
 
-This is a python3.10 (replacing the old 2.7 version) implementation of a parallax of pulsation method for Cepheids stars, described in [Mérand et al. (Astronomy & Astrophysics 584-80, 2015)](http://adsabs.harvard.edu/abs/2015A%26A...584A..80M). As of November 2022, [17 refereed articles](https://ui.adsabs.harvard.edu/search/filter_property_fq_property=AND&filter_property_fq_property=property%3A%22refereed%22&fq=%7B!type%3Daqp%20v%3D%24fq_property%7D&fq_property=(property%3A%22refereed%22)&q=%20full%3A%22SPIPS%22%20year%3A2015-2050%20author%3A%22M%C3%A9rand%22&sort=date%20desc%2C%20bibcode%20desc&p_=0) have been published with SPIPS.
+This is a python3 implementation of a parallax of pulsation method for Cepheids stars, described in [Mérand et al. (Astronomy & Astrophysics 584-80, 2015)](http://adsabs.harvard.edu/abs/2015A%26A...584A..80M). It replaces the now outdated (2.7 version)[https://github.com/amerand/SPIPS]. As of November 2022, [17 refereed articles](https://ui.adsabs.harvard.edu/search/filter_property_fq_property=AND&filter_property_fq_property=property%3A%22refereed%22&fq=%7B!type%3Daqp%20v%3D%24fq_property%7D&fq_property=(property%3A%22refereed%22)&q=%20full%3A%22SPIPS%22%20year%3A2015-2050%20author%3A%22M%C3%A9rand%22&sort=date%20desc%2C%20bibcode%20desc&p_=0) have been published with SPIPS.
 
+The code fits photometric measurement (including colors), radial velocities and interferometric angular diameters in a consistent way to derive the effective temperature, as well as apparent and absolute radial temporal variations of pulsating stars. From these later 2 quantities, absolute distances can be derived. 
+
+An example below of several galactic Cepheids in the radius/effective temperature diagram, based on the sample of (Trahin et al. (2021))[https://ui.adsabs.harvard.edu/abs/2021A%26A...656A.102T/abstract]. Dots are average values, and the light lines are the actual variations during the pulsation. This sample was used to generate templates to fit extragalactic Cepheids' light curves in (Javanmardi et al. (2021))[https://ui.adsabs.harvard.edu/abs/2021ApJ...911...12J/abstract]. 
+
+![RTdiagram_template_stars.png](RTdiagram_template_stars.png)
 
 ## Quick Start / Example
 
@@ -19,7 +24,7 @@ Quick Start:
 The result of the model is shown below:
 ![Fig1](delta_cep.png)
 - the upper left panel (a) shows the phased radial velocity data (points) and model (line)
-- the middle left panel (b) shows the phased effective temperature data (points) and model (line)
+- the middle left panel (b) shows the phased effective temperature data (points) and mode l (line)
 - the lower left panel (c) shows the phased interferometric angular diameter data (points) and model (lines). Note that the different colors show the impact of the effects of the interferometric baseline on the diameter measurements, due to the presence of an circum-stellar envelop
 - the panels on the right hand side (d to v) show the photometric data.
 
