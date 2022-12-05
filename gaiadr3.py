@@ -1,4 +1,7 @@
 from astroquery.gaia import Gaia
+
+Gaia.MAIN_GAIA_TABLE = "gaiadr3.gaia_source"
+
 # -- update astroquery to query DR2! e.g.:
 # /Applications/anaconda2/lib/python2.7/site-packages/astroquery/gaia/core.py
 
@@ -11,12 +14,12 @@ import matplotlib.pyplot as plt
 import pickle # Python 2!
 import os
 
-datafile = 'gaiadr2.cpickle'
+datafile = 'gaiadr3.pckl'
 
-def getDr2Phot(starName):
+def getDr3Phot(starName):
     """
     - query simbad to get sky coordinates for "starName"
-    - query Gaia DR2 to get ID
+    - query Gaia DR3 to get ID
     - query ESA to get epoch photometry
 
     returns dictionnary with all measurements, key 'SPIPS' contains the SPIPS data
@@ -54,14 +57,18 @@ def getDr2Phot(starName):
 
     r['source_id', 'ra', 'dec', 'phot_g_mean_mag', 'parallax', 'parallax_error'].pprint()
     id = r['source_id']
-    url = 'http://geadata.esac.esa.int/data-server/data?RETRIEVAL_TYPE=epoch_photometry&ID=%d&VALID_DATA=false&FORMAT=CSV'
+    # -- obsolete -> only for DR2
+    #url = 'http://geadata.esac.esa.int/data-server/data?RETRIEVAL_TYPE=epoch_photometry&ID=%d&VALID_DATA=false&FORMAT=CSV'
+    url = 'http://gea.esac.esa.int/data-server/data?RETRIEVAL_TYPE=epoch_photometry&ID=%d&VALID_DATA=false&FORMAT=CSV'
+
     f = urllib.request.urlopen(url%(int(id)))
+    print('reading data returned from gea.esac.esa.int')
     for l in f.readlines():
         if not 'mag' in list(data.keys()):
-            cols =  l.split(',')
+            cols =  l.decode().split(',')
             data.update({c:[] for c in cols})
-        elif len(l)>10 and l.split(',')[3]!='':
-            for i,v in enumerate(l.split(',')):
+        elif len(l)>10 and l.decode().split(',')[3]!='':
+            for i,v in enumerate(l.decode().split(',')):
                 try:
                     v = float(v)
                 except:
@@ -70,11 +77,11 @@ def getDr2Phot(starName):
             data['MJD'].append(data['time'][-1]+55197.0)
 
             # -- make SPIPS data points:
-            f = {'G':'G_GAIA_GAIA2',
-                'BP':'Gbp_GAIA_GAIA2',
-                'RP':'Grp_GAIA_GAIA2'}
+            f = {'G':'G_GAIA_GAIA3',
+                'BP':'Gbp_GAIA_GAIA3',
+                'RP':'Grp_GAIA_GAIA3'}
 
-            data['SPIPS'].append([data['MJD'][-1], 'mag;Gaia DR2',
+            data['SPIPS'].append([data['MJD'][-1], 'mag;Gaia DR3',
                                   f[data['band'][-1]], data['mag'][-1],
                                   2.5/np.log(10)*1/data['flux_over_error'][-1],])
         else:
@@ -90,7 +97,7 @@ def getDr2Phot(starName):
 
 def checkColorExcess(s, oplot=False):
     """
-    s = getDr2Phot('...')
+    s = getDr3Phot('...')
     """
     if not oplot:
         plt.figure(0, figsize=(12,5))
@@ -98,7 +105,7 @@ def checkColorExcess(s, oplot=False):
     if isinstance(s, str):
         if not oplot:
             plt.suptitle(s)
-        s = getDr2Phot(s)
+        s = getDr3Phot(s)
     if not 'band' in list(s.keys()):
         return
     F, M = {}, {}
