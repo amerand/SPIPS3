@@ -47,7 +47,7 @@ elif _ldCoef=='NEILSON':
     import neilson_cld
 elif _ldCoef=='SATLAS':
     import ldsatlas
-print(' > Limb Darkening models:', _ldCoef)
+#print(' > Limb Darkening models:', _ldCoef)
 
 import dpfit
 
@@ -55,17 +55,19 @@ __SEDmodel = 'atlas9' # -- check variable atlas9.useBOSZ !!!
 #__SEDmodel = 'BOSZ' # -- check variable atlas9.useBOSZ !!!
 
 #__SEDmodel = 'phoenix2' # using Goettingen grid
-print(' > SED models models:', __SEDmodel)
+#print(' > SED models models:', __SEDmodel)
 
 __monochromaticAlambda = False
 
-_dir_data = '../SPIPS3/DATA/'
-for d in sys.path:
-    if os.path.isdir(d) and 'SPIPS3' in d:
-        _dir_data = os.path.join(d, 'DATA')
-        print('\033[43m', _dir_data, '\033[0m')
+this_dir, this_filename = os.path.split(__file__)
+_dir_data = os.path.join('DATA')
 
-_dir_export = './'
+# for d in sys.path:
+#     if os.path.isdir(d) and 'SPIPS3' in d:
+#         _dir_data = os.path.join(d, 'DATA')
+#         print('\033[43m', _dir_data, '\033[0m')
+
+_dir_export = this_dir
 
 #plt.rc('font', family='monofur', size=9, style='normal')
 #plt.rc('font', family='courier', size=8)
@@ -80,7 +82,7 @@ C_Teffsol = 5779.57 # in K
 C_mas = np.pi/(180*3600*1000.) # rad/mas
 
 
-print("==== Spectro/Photo/Interferometry of Pulsating Stars ====")
+#print("==== Spectro/Photo/Interferometry of Pulsating Stars ====")
 
 def clean():
     """
@@ -378,14 +380,15 @@ def fit(allobs, first_guess, doNotFit=None, guessDoNotFit=False, fitOnly=None, f
     else:
         #-- single Fit: needs to run it once before running the fit
         if maxCores==1:
+            #print('fit single core')
             tmp = model(obs, first_guess)
             fit=dpfit.leastsqFit(model, obs, first_guess,
                                 [o[-2] for o in obs],
                                 err=errs, maxfev=maxfev,
                                 doNotFit=doNotFit,fitOnly=fitOnly, follow=follow,
                                 verbose=verbose, ftol=ftol, epsfcn=epsfcn, showBest=False)
-
         else:
+            #print('fit multi core')
             tmp = modelM(obs, first_guess, maxCores=maxCores)
             fit=dpfit.leastsqFit(modelM, obs, first_guess,
                                 [o[-2] for o in obs],
@@ -399,27 +402,28 @@ def fit(allobs, first_guess, doNotFit=None, guessDoNotFit=False, fitOnly=None, f
         mod = model(allobs, fit['best'], plot=False, verbose=False, exportFits=False)
 
         # -- phase==0 for maximum luminosity
-        print('PHASE OFFSET:', phaseOffset)
         if rephaseMaxLum:
             fit['best'] = dephaseParam(fit['best'], phaseOffset)
         # -- show parameters, corrected for 0-phase
-        print('#'*5, '0-phase at max luminosity:', '#'*48)
-        print('{')
-        keyz = sorted(fit['best'].keys())
-        S = max([len(k) for k in keyz])
-        for k in keyz:
-            _fmtS = "    '%s'"+' '*(S-len(k))+':'
-            if  fit['uncer'][k]>0:
-                N = int(np.ceil(-np.log10(fit['uncer'][k])))+2
-                _fmtN = '%.'+str(N)+'f, # +/- %.'+str(N)+'f'
-                try:
-                    print(_fmtS%k, _fmtN%(fit['best'][k], fit['uncer'][k]))
-                except:
+        if verbose:
+            print('PHASE OFFSET:', phaseOffset)
+            print('#'*5, '0-phase at max luminosity:', '#'*48)
+            print('{')
+            keyz = sorted(fit['best'].keys())
+            S = max([len(k) for k in keyz])
+            for k in keyz:
+                _fmtS = "    '%s'"+' '*(S-len(k))+':'
+                if  fit['uncer'][k]>0:
+                    N = int(np.ceil(-np.log10(fit['uncer'][k])))+2
+                    _fmtN = '%.'+str(N)+'f, # +/- %.'+str(N)+'f'
+                    try:
+                        print(_fmtS%k, _fmtN%(fit['best'][k], fit['uncer'][k]))
+                    except:
+                        print(_fmtS%k, fit['best'][k], ',')
+                else:
                     print(_fmtS%k, fit['best'][k], ',')
-            else:
-                print(_fmtS%k, fit['best'][k], ',')
-        print('}')
-        print('#'*80)
+            print('}')
+            print('#'*80)
 
         if plot or exportFits:
             mod = model(allobs, fit['best'], plot=plot, starName=starName,
@@ -1202,7 +1206,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                  'VRAD PHI'+str(k) in a:
                 # -- ratio of amplitudes
                 Vrad += a['VRAD A1']*a['VRAD R'+str(k)]*\
-                        np.cos(2*np.pi*k*xvpuls + a['VRAD PHI1'] -
+                        np.cos(2*np.pi*k*xvpuls + k*a['VRAD PHI1'] -
                                a['VRAD PHI'+str(k)])
         Vgamma = Vrad[:-1].mean()
         Vpuls = (Vrad-Vgamma)*a['P-FACTOR'] + Vgamma
@@ -2276,7 +2280,8 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                    frameon=False, numpoints=1, ncol=2)
         plt.ylabel('velocity (km/s)')
         plt.xlim(-0.1,1.1)
-        plt.ylim(y_min-0.05*(y_max-y_min), y_max+0.13*(y_max-y_min))
+        if y_max>y_min:
+            plt.ylim(y_min-0.05*(y_max-y_min), y_max+0.13*(y_max-y_min))
         ax.set_xticklabels([])
         uni = labelPanel(uni)
 
@@ -3365,7 +3370,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         print('--------------------------------------------------------------')
         for l in [1.,1.5, 2.,3, 4.,6.,8.,12., 16., 20., 30., 50.]:
             fits_model['IR EXCESS %4.1fUM'%l] = (round(f_excess(l), 3), 'magnitude')
-    if plot:
+    if plot and len(excess['wl'])>0:
         figures.append(plt.figure(99))
         plt.clf()
         ax2 = plt.subplot(111)
@@ -3909,18 +3914,19 @@ def dephaseParam(a, dphi):
     if 'TEFF PHASE OFFSET' in list(a.keys()):
         a['TEFF PHASE OFFSET'] -= dphi
 
-    if any(['VPULS VAL' in x for x in list(a.keys())]) or any(['VRAD VAL' in x for x in list(a.keys())]):
+    if any(['VPULS VAL' in x for x in list(a.keys())]) or \
+        any(['VRAD VAL' in x for x in list(a.keys())]):
         # -- VPULS in spline
         for k in list(a.keys()):
             if 'VPULS PHI' in k or 'VRAD PHI' in k:
                 a[k] = (a[k]+dphi)%1.0
-
     else:
         # -- VPULS in Fourier
         for k in list(a.keys()):
             if 'VPULS PHI' in k or 'VRAD PHI' in k:
-                a[k] -= int(k.split('PHI')[1])*2*np.pi*dphi
-                a[k] = a[k]%(2*np.pi)
+                if not k.replace('PHI', 'R') in a.keys():
+                    a[k] -= int(k.split('PHI')[1])*2*np.pi*dphi
+                    a[k] = a[k]%(2*np.pi)
 
     if any(['TEFF VAL' in x for x in list(a.keys())]):
         # -- TEFF in spline
@@ -3930,7 +3936,7 @@ def dephaseParam(a, dphi):
     else:
         # -- TEFF in Fourier
         for k in list(a.keys()):
-            if 'TEFF PHI' in k:
+            if 'TEFF PHI' in k and not k.replace('PHI', 'R') in a.keys():
                 a[k] -= int(k.split('PHI')[1])*2*np.pi*dphi
                 a[k] = a[k]%(2*np.pi)
     return a
@@ -4659,6 +4665,23 @@ def n_air_P_T(wl, P=743.2, T=290, e=74.32):
            (77.6*np.array(P)/np.array(T)
                              + 3.73e-5*e/np.array(T)**2)
 
+
+def computeAlGrid():
+    global __SPE, __Algrid
+    __Algrid = {}
+    for i,filt in enumerate(sorted(photfilt2._data.keys())): # for each filter
+        #print(i, len(photfilt2._data.keys()), filt)
+        # -- wavelength table
+        l = np.linspace(photfilt2.wavelRange(filt)[0],
+                        photfilt2.wavelRange(filt)[1],
+                        100)
+        t = photfilt2.Transmission(filt)(l)
+        for T in __SPE.keys(): # for each temperature
+            s = np.interp(l, __SPE[T]['WAVEL'], __SPE[T]['FLAMBDA'])
+            key = str(T)+'-'+filt
+            __Algrid[key] = np.sum(Alambda_Exctinction(l, EB_V=1)*s*t*l)/np.sum(s*t*l)
+    return __Algrid
+
 def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
     """
     wl in microns of filter name. Returns A(lambda) for each wavelength.
@@ -4672,7 +4695,7 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
 
     TABLE 3 and 4 from FITZPATRICK: 1999 PASP, 111-63 for visible, IR
     """
-    global __SPE
+    global __SPE, __Algrid
     ### res == A_lambda/E(B-V)
 
     if isinstance(Teff, list):
@@ -4690,15 +4713,22 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
                         photfilt2.wavelRange(wl)[1],
                         100)
         # -- interpolation:
-        k0 = np.array(list(__SPE.keys()))[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[0]]
-        s = np.interp(l, __SPE[k0]['WAVEL'], __SPE[k0]['FLAMBDA'])
-        t = photfilt2.Transmission(wl)(l)
-        a0 = np.sum(Alambda_Exctinction(l, EB_V=EB_V, Rv=Rv)*s*t*l)/np.sum(s*t*l)
+        k0 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[0]]
+        key0 = str(k0)+'-'+wl
+        if not key0 in __Algrid:
+            s = np.interp(l, __SPE[k0]['WAVEL'], __SPE[k0]['FLAMBDA'])
+            t = photfilt2.Transmission(wl)(l)
+            __Algrid[key0] = np.sum(Alambda_Exctinction(l, EB_V=1, Rv=Rv)*s*t*l)/np.sum(s*t*l)
+        a0 = __Algrid[key0]*EB_V
 
-        k1 = np.array(list(__SPE.keys()))[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[1]]
-        s = np.interp(l, __SPE[k1]['WAVEL'], __SPE[k1]['FLAMBDA'])
-        t = photfilt2.Transmission(wl)(l)
-        a1 = np.sum(Alambda_Exctinction(l, EB_V=EB_V, Rv=Rv)*s*t*l)/np.sum(s*t*l)
+        k1 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[1]]
+        key1 = str(k1)+'-'+wl
+        if not key1 in __Algrid:
+            s = np.interp(l, __SPE[k1]['WAVEL'], __SPE[k1]['FLAMBDA'])
+            t = photfilt2.Transmission(wl)(l)
+            __Algrid[key1] = np.sum(Alambda_Exctinction(l, EB_V=1, Rv=Rv)*s*t*l)/np.sum(s*t*l)
+        a1 = __Algrid[key1]*EB_V
+
         return a0 + (Teff-k0)*(a1-a0)/(k1-k0)
 
     if np.isscalar(wl):
@@ -4769,24 +4799,31 @@ if False:
                                          Alambda_Exctinction('V_JOHNSON', 1.0, Rv=3.1)))
 
 # == Teff=6000K, logg=1.5 spectra for computing reddenning:
-filename = 'BW2_ATLAS9_aLambdaSPE.dpy'
-if os.path.exists(os.path.join(_dir_data, filename)):
-    print('loading', filename, '...', end=' ')
-    f = open(os.path.join(_dir_data, filename), 'rb')
-    __SPE = pickle.load(f)
-    f.close()
-    print('OK')
-else:
-    print('reloading atlas9 files...', end=' ')
-    import atlas9
-    __SPE={}
-    for T in [4000, 4500, 5000, 5500, 6000, 6500, 7000]:
-        __SPE[T] = atlas9.ReadOneFile(os.path.join(_dir_data,
-                                       'ATLAS9/gridp00k2odfnew/fp00t%sg15k2odfnew.dat'%str(T)))
-    f = open(os.path.join(_dir_data, filename), 'wb')
-    pickle.dump(__SPE, f)
-    f.close()
-    print('saving', filename)
+try:
+    __SPE.keys()
+
+except:
+    filename = 'BW2_ATLAS9_aLambdaSPE.dpy'
+    if os.path.exists(os.path.join(_dir_data, filename)):
+        print('loading', filename, '...', end=' ')
+        f = open(os.path.join(_dir_data, filename), 'rb')
+        __SPE = pickle.load(f)
+        __Algrid = computeAlGrid()
+        f.close()
+        print('OK')
+    else:
+        print('reloading atlas9 files...', end=' ')
+        import atlas9
+        __SPE={}
+        for T in [4000, 4500, 5000, 5500, 6000, 6500, 7000]:
+            __SPE[T] = atlas9.ReadOneFile(os.path.join(_dir_data,
+                                           'ATLAS9/gridp00k2odfnew/fp00t%sg15k2odfnew.dat'%str(T)))
+        f = open(os.path.join(_dir_data, filename), 'wb')
+        pickle.dump(__SPE, f)
+        f.close()
+        __Algrid = computeAlGrid()
+        print('saving', filename)
+
 # =========================================================
 
 # == Computation of the GRID of magnitudes at theta=1mas ========
@@ -4794,21 +4831,21 @@ else:
 # -- try to read from file
 
 filename = 'BW2_maggrid_%s.dpy'%__SEDmodel
-
 try:
+    __MAGgrid.keys()
+    _computeGrid = False
+except:
     print('loading', filename,' ...', end=' ')
     f = open(os.path.join(_dir_data, filename), 'rb')
     __MAGgrid = pickle.load(f)
     f.close()
-    print('OK')
     _computeGrid = False
-    # -- check we have all the filters
-    for k in list(photfilt2._data.keys()):
-        if not k in list(__MAGgrid.keys()):
-            print(' >> filter', k, 'is missing in the grid -> recomputing grid now!')
-            _computeGrid = True
-except:
-    _computeGrid = True
+    print('OK')
+
+for k in list(photfilt2._data.keys()):
+    if not k in list(__MAGgrid.keys()):
+        print(' >> filter', k, 'is missing in the grid -> recomputing grid now!')
+        _computeGrid = True
 
 #_computeGrid = True
 if _computeGrid:
@@ -5162,43 +5199,46 @@ def iStarShell(r_rshell, params, plot=False):
 
 filename = 'BW2_diambiask.dpy'
 try:
-    print('loading %sy ...'%filename, end=' ')
-    f = open(os.path.join(_dir_data,filename), 'rb')
-    __biasData = pickle.load(f)
-    f.close()
-    print('OK')
+    __biasData.keys()
 except:
-    print('Failed')
-    # -- compute grid as it does not seem to exist
-    print('computing', filename)
-    # =================================
-    params = {'LD DIAM':1.0, 'wavel':2.133, 'Tstar':6000.,
-              'Tshell':1200., 'nu':1.0, 'Rshell/Rstar':2.,
-              'tau':0.3}
-    Ntau = 25
-    Nrsrs = 10
-    NB = 100
-    B = np.linspace(1., 500., NB) # in meters
-    __biasData = {'fr':np.zeros((Nrsrs,Ntau)),
-                  'bias':np.zeros((Nrsrs,Ntau,NB)),
-                  'Rshell/Rstar':np.linspace(1.1,6,Nrsrs),
-                  'Bdw':B*params['LD DIAM']/params['wavel']}
-    for j, rsrs in enumerate(__biasData['Rshell/Rstar']):
-        print(j, Nrsrs)
-        for i, tau in enumerate(np.logspace(-4, 0, Ntau)):
-            params['tau'] = tau
-            params['Rshell/Rstar'] = rsrs
-            tmp = vStarShell(B, params, bias=True)
-            __biasData['fr'][j,i] = tmp[1]
-            __biasData['bias'][j,i,:] = tmp[0]
-    print('saving', filename)
-    f = open(os.path.join(_dir_data, filename), 'wb')
-    pickle.dump(__biasData, f)
-    f.close()
+    if os.path.exists(os.path.join(_dir_data,filename)):
+        print('loading %sy ...'%filename, end=' ')
+        f = open(os.path.join(_dir_data,filename), 'rb')
+        __biasData = pickle.load(f)
+        f.close()
+        print('OK')
+    else:
+        # -- compute grid as it does not seem to exist
+        print('computing', filename)
+        # =================================
+        params = {'LD DIAM':1.0, 'wavel':2.133, 'Tstar':6000.,
+                  'Tshell':1200., 'nu':1.0, 'Rshell/Rstar':2.,
+                  'tau':0.3}
+        Ntau = 25
+        Nrsrs = 10
+        NB = 100
+        B = np.linspace(1., 500., NB) # in meters
+        __biasData = {'fr':np.zeros((Nrsrs,Ntau)),
+                      'bias':np.zeros((Nrsrs,Ntau,NB)),
+                      'Rshell/Rstar':np.linspace(1.1,6,Nrsrs),
+                      'Bdw':B*params['LD DIAM']/params['wavel']}
+        for j, rsrs in enumerate(__biasData['Rshell/Rstar']):
+            print(j, Nrsrs)
+            for i, tau in enumerate(np.logspace(-4, 0, Ntau)):
+                params['tau'] = tau
+                params['Rshell/Rstar'] = rsrs
+                tmp = vStarShell(B, params, bias=True)
+                __biasData['fr'][j,i] = tmp[1]
+                __biasData['bias'][j,i,:] = tmp[0]
+        print('saving', filename)
+        f = open(os.path.join(_dir_data, filename), 'wb')
+        pickle.dump(__biasData, f)
+        f.close()
 
-KLUDGE = 0.5
-if KLUDGE!=1:
-    print('\033[41m### bw2.diamBiasK has a kludge factor of %f ###\033[0m'%float(KLUDGE))
+KLUDGE = 1.0
+
+# if KLUDGE!=1:
+#     print('\033[41m### bw2.diamBiasK has a kludge factor of %f ###\033[0m'%float(KLUDGE))
 
 def diamBiasK(diam, B, Kexcess, RshellRstar=2.5):
     """

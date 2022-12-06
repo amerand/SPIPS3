@@ -1,9 +1,13 @@
 import spips
 import delta_cep_data # contains all the observations
 import os
+import numpy as np
 
 # -- load data from aux file
 obs = delta_cep_data.data
+
+#import gaiadr3
+#obs += gaiadr3.getDr3Phot('delta Cep')['SPIPS']
 
 # -- this is the model using splines
 # Parameters description:
@@ -76,49 +80,51 @@ p_splines = {'DIAMAVG':      1.45616 , # +/- 0.00105
 # 'TEFF R4':      0.06821 ,
 # 'TEFF R5':      0.02028 ,
 
-p_fourier = {'DIAMAVG':      1.45621 , # +/- 0.00103
-        'E(B-V)':       0.09123 , # +/- 0.00189
-        'EXCESS EXP':   0.4 ,
-        'EXCESS SLOPE': 0.06187 , # +/- 0.00148
-        'EXCESS WL0':   1.2 ,
-        'METAL':        0.06 ,
-        'MJD0':         48304.7362421 ,
-        'P-FACTOR':     1.2743 , # +/- 0.0188
-        'PERIOD':       5.36627457 , # +/- 5.15e-06
-        'PERIOD1':      -0.0601 , # +/- 0.024
-        'TEFF A0':      5887.088 , # +/- 5.621
-        'TEFF A1':      470.031 , # +/- 3.244
-        'TEFF PHI1':    -0.35815 , # +/- 0.00513
-        'TEFF PHI2':    -0.2397 , # +/- 0.0145
-        'TEFF PHI3':    0.357 , # +/- 0.0317
-        'TEFF PHI4':    0.7916 , # +/- 0.0702
-        'TEFF PHI5':    1.697 , # +/- 0.22
-        'TEFF R2':      0.39535 , # +/- 0.00523
-        'TEFF R3':      0.15611 , # +/- 0.00481
-        'TEFF R4':      0.06832 , # +/- 0.00461
-        'TEFF R5':      0.02047 , # +/- 0.00438
-        'VRAD A0':      -18.4296 , # +/- 0.0707
-        'VRAD A1':      15.483 , # +/- 0.115
-        'VRAD PHI1':    2.18429 , # +/- 0.00697
-        'VRAD PHI2':    -0.6246 , # +/- 0.0165
-        'VRAD PHI3':    4.9257 , # +/- 0.0353
-        'VRAD PHI4':    4.2857 , # +/- 0.0468
-        'VRAD PHI5':    3.4539 , # +/- 0.0829
-        'VRAD PHI6':    2.802 , # +/- 0.147
-        'VRAD PHI7':    1.729 , # +/- 0.272
-        'VRAD PHI8':    1.164 , # +/- 0.525
-        'VRAD R2':      0.41709 , # +/- 0.006
-        'VRAD R3':      0.21503 , # +/- 0.00474
-        'VRAD R4':      0.1206 , # +/- 0.0065
-        'VRAD R5':      0.05849 , # +/- 0.00673
-        'VRAD R6':      0.03872 , # +/- 0.00503
-        'VRAD R7':      0.01959 , # +/- 0.00465
-        'VRAD R8':      0.00997 , # +/- 0.00538
-        'd_kpc':        0.274 ,
+p_fourier = {    'DIAMAVG'     : 1.45105, # +/- 0.00144
+        'E(B-V)'      : 0.09544, # +/- 0.00212
+        'EXCESS EXP'  : 0.4 ,
+        'EXCESS SLOPE': 0.05933, # +/- 0.00184
+        'EXCESS WL0'  : 1.2 ,
+        'METAL'       : 0.06 ,
+        'MJD0'        : 48304.734452745004 ,
+        'P-FACTOR'    : 1.2376, # +/- 0.0211
+        'PERIOD'      : 5.36627564, # +/- 0.00000588
+        'PERIOD1'     : -0.0602, # +/- 0.0271
+        'TEFF A0'     : 5909.50, # +/- 6.17
+        'TEFF A1'     : 472.10, # +/- 3.66
+        'TEFF PHI1'   : 5.91881, # +/- 0.00581
+        'TEFF PHI2'   : 6.0303, # +/- 0.0163
+        'TEFF PHI3'   : 0.3363, # +/- 0.0359
+        'TEFF PHI4'   : 0.7241, # +/- 0.0818
+        'TEFF PHI5'   : 1.758, # +/- 0.227
+        'TEFF R2'     : 0.39786, # +/- 0.00589
+        'TEFF R3'     : 0.15498, # +/- 0.00544
+        'TEFF R4'     : 0.06560, # +/- 0.00523
+        'TEFF R5'     : 0.02224, # +/- 0.00501
+        'VRAD A0'     : -18.4304, # +/- 0.0798
+        'VRAD A1'     : 15.484, # +/- 0.130
+        'VRAD PHI1'   : 2.18063, # +/- 0.00796
+        'VRAD PHI2'   : -1.5854, # +/- 0.0212
+        'VRAD PHI3'   : 6.1503, # +/- 0.0449
+        'VRAD PHI4'   : 4.5610, # +/- 0.0591
+        'VRAD PHI5'   : 2.7516, # +/- 0.0904
+        'VRAD PHI6'   : 10.573, # +/- 0.173
+        'VRAD PHI7'   : 2.279, # +/- 0.303
+        'VRAD PHI8'   : 0.719, # +/- 0.603
+        'VRAD R2'     : -0.41561, # +/- 0.00678
+        'VRAD R3'     : -0.21492, # +/- 0.00535
+        'VRAD R4'     : 0.12098, # +/- 0.00736
+        'VRAD R5'     : -0.05963, # +/- 0.00760
+        'VRAD R6'     : -0.03826, # +/- 0.00565
+        'VRAD R7'     : 0.01916, # +/- 0.00526
+        'VRAD R8'     : -0.00988, # +/- 0.00601
+        'd_kpc'       : 0.274 ,
         }
 
-
 def fit(p=None):
+    """
+    p: dictionnary containgin the model
+    """
     if p is None:
         p = p_splines
     # - list parameters which we do not wish to fit
@@ -133,7 +139,7 @@ def fit(p=None):
             ftol=5e-4, # stopping tolerance on chi2
             epsfcn=1e-8, # by how much parameters will vary
             maxfev=500, # maximum number of iterations
-            maxCores=None, # max number of CPU cores, None will use all available
+            maxCores=4, # max number of CPU cores, None will use all available
             starName='delta Cep',
             follow=['P-FACTOR'], # list here parameters you want to see during fit
             exportFits=True,
@@ -142,6 +148,9 @@ def fit(p=None):
     return
 
 def show(p=None):
+    """
+    p: dictionnary containgin the model
+    """
     if p is None:
         p = p_splines
     Y = spips.model(obs, p, starName='delta Cep', verbose=True, plot=True)
@@ -154,13 +163,113 @@ def fitsDemo(mode='export', p=None):
         Y = spips.model(obs, p, starName='delta Cep',
                         exportFits=True, verbose=True)
     elif mode=='import':
-        filename = 'delta_cep.fits'
+        filename = os.path.join('DELTA_CEP', 'delta_cep.fits')
         if os.path.exists(filename):
-            _p, _obs = spips.importFits(filename)
-            Y = spips.model(_obs, _p, starName='delta Cep', verbose=True,
+            tmp = spips.importFits(filename)
+            Y = spips.model(tmp[1], tmp[0], starName='delta Cep', verbose=True,
                             plot=True)
         else:
             print('ERROR:', filename, 'does not exist!')
     else:
         print("use: fitsDemo(mode='export')")
         print("  or fitsDemo(mode='import')")
+
+def fitFromScratch(period=5.366, dist=.25):
+    global obs
+    p = {'PERIOD':period,
+         'P-FACTOR':1.27,
+         'd_kpc': dist,
+         'TEFF A0': 6000,
+         'METAL': 0.0,
+         'E(B-V)':0.0, 
+         'DIAMAVG':1.5,
+      }
+
+    oV1 = 4 # Fourier Components for first
+    oT1 = 2
+    # == only Vrad =====================================
+    print('fitting VRAD only...', end=' ')
+    tech = ['vrad']
+    _obs = [o for o in obs if any([o[1].startswith(t) for t in tech])]
+
+    p['MJD0'] = np.mean([o[0] for o in _obs])
+    p['VRAD A0'] = np.mean([o[-2] for o in _obs])
+    p['VRAD A1'] = np.ptp([o[-2] for o in _obs])/oV1
+    p['VRAD PHI1'] = 0
+    for k in range(oV1-1):
+        p['VRAD R%d'%(k+2)] = 1.0
+        p['VRAD PHI%d'%(k+2)] = 0 
+
+    doNotFit = ['MJD0', 'P-FACTOR', 'METAL', 'd_kpc', 'DIAMAVG', 'TEFF A0', 'E(B-V)']
+    fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1)
+    p = fit['best']
+    print('chi2=%.3f'%fit['chi2'])
+
+    return p
+
+    # == fit teff and colors
+    print('fitting teff and colors...', end=' ')
+
+    tech = ['color', 'teff']
+    tech = ['teff']
+    _obs = [o for o in obs if any([o[1].startswith(t) for t in tech])]
+    if len(_obs)>(2*oT1+1):
+        mjd0 = np.mean([o[0] for o in _obs if not o[0] is None ])
+        p['MJD0'] += np.round((mjd0-p['MJD0'])/p['PERIOD'], 0)*p['PERIOD']
+        mjd0 = p['MJD0']
+        for k in range(oT1):
+            if k==0:
+                p['TEFF A%d'%(k+1)] = 500/(k+1)**2 
+                p['TEFF PHI%d'%(k+1)] = np.pi/2*(k+1)
+            else:
+                p['TEFF R%d'%(k+1)] = 1/(k+1)**2 
+                p['TEFF PHI%d'%(k+1)] = 0.01
+        #p['PERIOD1'] = 0.0
+        doNotFit = ['MJD0', 'P-FACTOR', 'METAL', 'd_kpc', 'DIAMAVG', 'PERIOD']
+        doNotFit += list(filter(lambda x: x.startswith('VRAD '), p.keys()))
+        if not (any([o[1].startswith('teff') for o in _obs]) and
+                any([o[1].startswith('color') for o in _obs])):
+            doNotFit.append('E(B-V)')
+
+        fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1,
+                        normalizeErrors='techniques', ftol=1e-3)
+        p = fit['best']
+        phi = ((p['MJD0']-mjd0)/p['PERIOD'])%1.0
+        for x in p:
+            if x.startswith('VRAD PHI') and not x.replace('PHI', 'R') in p:
+                k = int(x.split('VRAD PHI')[1])
+                p[x] += k*phi*2*np.pi 
+        print('chi2=%.3f'%fit['chi2'])
+    else:
+        print('not enough data')
+
+    # print('fitting all data...', end=' ')
+    # # -- keep Teff and Vrad profile fixed
+    # p.update({'PERIOD1':      0.1, 
+    #           'EXCESS EXP':   0.4 , # exponential law for IR Excess
+    #           'EXCESS SLOPE': 0.0 , # slope for IR excess
+    #           'EXCESS WL0':   1.2 , # starting WL, in um, for IR Excess
+    #           })
+    # doNotFit = ['MJD0', 'P-FACTOR', 'METAL', 'EXCESS WL0', 'EXCESS EXP']
+    
+    # for k in p:
+    #     if k.startswith('VRAD A'):
+    #         doNotFit.append(k)
+    #     if k.startswith('TEFF A') and k!='TEFF A0':
+    #         doNotFit.append(k)
+
+    # fit = spips.fit(obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=4,
+    #                 normalizeErrors='techniques', ftol=1e-3)
+    # p = fit['best']
+    # print('chi2=%.3f'%fit['chi2'])
+
+    show(p)
+
+    return p
+
+
+
+    
+
+
+

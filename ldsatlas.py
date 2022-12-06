@@ -17,23 +17,6 @@ ldsatlas._udld_B74(0.5)
 """
 
 _data_dir = '../SPIPS3/DATA/'
-
-for d in sys.path:
-    if os.path.isdir(d) and 'SPIPS3' in d:
-        _data_dir = os.path.join(d, 'DATA')
-        print('\033[43m', _data_dir, '\033[0m')
-
-col5 = ['Teff', 'logg', 'mass']
-for b in ['B','V','R','I','H','K','CoR','Kep']:
-    for i in ['1','2','3','4']:
-        col5.append('f%s(%s)'%(i,b))
-nei5 = {c:[] for c in col5}
-col16 = ['Teff', 'logg', 'mass', 'B','V','R','I','H','K','CoR','Kep']
-nei16 = {c:[] for c in col16}
-
-TeffMin, TeffMax = 3900, 20000
-ftpServer = 'cdsarc.u-strasbg.fr'
-
 def downloadAllModels():
     global _data_dir
 
@@ -148,52 +131,70 @@ def downloadAllModels():
                            open(os.path.join(_data_dir, _files_dir, 'planar', f), 'wb').write)
     ftp.close()
 
-#downloadAllModels()
 
-_files_dir = './LD_NEILSON/DWARFS/'
-# -- read table5.dat
-# -- read the 4 parameters for each band
-for l in open(os.path.join(_data_dir, _files_dir, 'table5.dat')).readlines():
-    for k,w in enumerate(l.split()):
-        nei5[col5[k]].append(float(w))
-
-_files_dir = './LD_NEILSON/GIANTS/'
-# -- read table16.dat
 try:
-    for l in open(os.path.join(_data_dir, _files_dir, 'table16.dat')).readlines():
-        for k,w in enumerate(l.split()):
-            nei16[col16[k]].append(float(w))
-    for c in col16:
-        nei16[c] = np.array(nei16[c])
+    k = nei5.keys()
 except:
-    pass
+    for d in sys.path:
+        if os.path.isdir(d) and 'SPIPS3' in d:
+            _data_dir = os.path.join(d, 'DATA')
+            print('\033[43m', _data_dir, '\033[0m')
 
-# -- continue reading the 4 parameters for each band
-for l in open(os.path.join(_data_dir, _files_dir, 'table5.dat')).readlines():
-    for k,w in enumerate(l.split()):
-        nei5[col5[k]].append(float(w))
-for c in col5:
-    nei5[c] = np.array(nei5[c])
+    col5 = ['Teff', 'logg', 'mass']
+    for b in ['B','V','R','I','H','K','CoR','Kep']:
+        for i in ['1','2','3','4']:
+            col5.append('f%s(%s)'%(i,b))
+    nei5 = {c:[] for c in col5}
+    col16 = ['Teff', 'logg', 'mass', 'B','V','R','I','H','K','CoR','Kep']
+    nei16 = {c:[] for c in col16}
 
-# -- Load the LD/Ross sent by Hilding, where LD is the outer diameter
-cols = ['mass', 'L', 'Teff', 'logg', 'Ross', 'Outer', 'Ross/Outer']
-rossTable = {k:[] for k in cols}
-f = open(os.path.join(_data_dir, 'LD_NEILSON', 'Rosseland_SATLAS.dat'))
-for l in f.readlines():
-    if not l.strip().startswith('#'):
-        for i,c in enumerate(cols):
-            rossTable[c].append(float(l.split()[i]))
-f.close()
-f = open(os.path.join(_data_dir, 'LD_NEILSON', 'Rosseland_SATLAS_dwarfs.dat'))
-cols = ['mass', 'L', 'Teff', 'logg', 'Ross/Outer']
-for l in f.readlines():
-    if not l.strip().startswith('#'):
-        for i,c in enumerate(cols):
-            rossTable[c].append(float(l.split()[i]))
-f.close()
+    TeffMin, TeffMax = 3900, 20000
+    ftpServer = 'cdsarc.u-strasbg.fr'
 
-for c in cols:
-    rossTable[c] = np.array(rossTable[c])
+    _files_dir = './LD_NEILSON/DWARFS/'
+    # -- read table5.dat
+    # -- read the 4 parameters for each band
+    for l in open(os.path.join(_data_dir, _files_dir, 'table5.dat')).readlines():
+        for k,w in enumerate(l.split()):
+            nei5[col5[k]].append(float(w))
+
+    _files_dir = './LD_NEILSON/GIANTS/'
+    # -- read table16.dat
+    try:
+        for l in open(os.path.join(_data_dir, _files_dir, 'table16.dat')).readlines():
+            for k,w in enumerate(l.split()):
+                nei16[col16[k]].append(float(w))
+        for c in col16:
+            nei16[c] = np.array(nei16[c])
+    except:
+        pass
+
+    # -- continue reading the 4 parameters for each band
+    for l in open(os.path.join(_data_dir, _files_dir, 'table5.dat')).readlines():
+        for k,w in enumerate(l.split()):
+            nei5[col5[k]].append(float(w))
+    for c in col5:
+        nei5[c] = np.array(nei5[c])
+
+    # -- Load the LD/Ross sent by Hilding, where LD is the outer diameter
+    cols = ['mass', 'L', 'Teff', 'logg', 'Ross', 'Outer', 'Ross/Outer']
+    rossTable = {k:[] for k in cols}
+    f = open(os.path.join(_data_dir, 'LD_NEILSON', 'Rosseland_SATLAS.dat'))
+    for l in f.readlines():
+        if not l.strip().startswith('#'):
+            for i,c in enumerate(cols):
+                rossTable[c].append(float(l.split()[i]))
+    f.close()
+    f = open(os.path.join(_data_dir, 'LD_NEILSON', 'Rosseland_SATLAS_dwarfs.dat'))
+    cols = ['mass', 'L', 'Teff', 'logg', 'Ross/Outer']
+    for l in f.readlines():
+        if not l.strip().startswith('#'):
+            for i,c in enumerate(cols):
+                rossTable[c].append(float(l.split()[i]))
+    f.close()
+
+    for c in cols:
+        rossTable[c] = np.array(rossTable[c])
 
 # ===============================================================================
 

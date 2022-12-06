@@ -29,7 +29,6 @@ for d in sys.path:
         _data_dir = os.path.join(d, 'DATA')
         print('\033[43m', _data_dir, '\033[0m')
 
-
 print('ATLAS9: _dir_data=', _dir_data, end=' ')
 if not os.path.exists(_dir_data):
     os.makedirs(_dir_data)
