@@ -1460,7 +1460,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                 Ns.remove(1)
                 for k in Ns:
                     Teff += a['TEFF A1']*a['TEFF R'+str(k)]*\
-                            np.cos(2*np.pi*k*xteff + a['TEFF PHI'+str(k)]-a['TEFF PHI1'])
+                            np.cos(2*np.pi*k*xteff + k*a['TEFF PHI1'] - a['TEFF PHI'+str(k)])
             else:
                 for k in Ns:
                     Teff += a['TEFF A'+str(k)]*\

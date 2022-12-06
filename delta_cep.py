@@ -80,45 +80,46 @@ p_splines = {'DIAMAVG':      1.45616 , # +/- 0.00105
 # 'TEFF R4':      0.06821 ,
 # 'TEFF R5':      0.02028 ,
 
-p_fourier = {    'DIAMAVG'     : 1.45105, # +/- 0.00144
-        'E(B-V)'      : 0.09544, # +/- 0.00212
-        'EXCESS EXP'  : 0.4 ,
-        'EXCESS SLOPE': 0.05933, # +/- 0.00184
-        'EXCESS WL0'  : 1.2 ,
-        'METAL'       : 0.06 ,
-        'MJD0'        : 48304.734452745004 ,
-        'P-FACTOR'    : 1.2376, # +/- 0.0211
-        'PERIOD'      : 5.36627564, # +/- 0.00000588
-        'PERIOD1'     : -0.0602, # +/- 0.0271
-        'TEFF A0'     : 5909.50, # +/- 6.17
-        'TEFF A1'     : 472.10, # +/- 3.66
-        'TEFF PHI1'   : 5.91881, # +/- 0.00581
-        'TEFF PHI2'   : 6.0303, # +/- 0.0163
-        'TEFF PHI3'   : 0.3363, # +/- 0.0359
-        'TEFF PHI4'   : 0.7241, # +/- 0.0818
-        'TEFF PHI5'   : 1.758, # +/- 0.227
-        'TEFF R2'     : 0.39786, # +/- 0.00589
-        'TEFF R3'     : 0.15498, # +/- 0.00544
-        'TEFF R4'     : 0.06560, # +/- 0.00523
-        'TEFF R5'     : 0.02224, # +/- 0.00501
-        'VRAD A0'     : -18.4304, # +/- 0.0798
-        'VRAD A1'     : 15.484, # +/- 0.130
-        'VRAD PHI1'   : 2.18063, # +/- 0.00796
-        'VRAD PHI2'   : -1.5854, # +/- 0.0212
-        'VRAD PHI3'   : 6.1503, # +/- 0.0449
-        'VRAD PHI4'   : 4.5610, # +/- 0.0591
-        'VRAD PHI5'   : 2.7516, # +/- 0.0904
-        'VRAD PHI6'   : 10.573, # +/- 0.173
-        'VRAD PHI7'   : 2.279, # +/- 0.303
-        'VRAD PHI8'   : 0.719, # +/- 0.603
-        'VRAD R2'     : -0.41561, # +/- 0.00678
-        'VRAD R3'     : -0.21492, # +/- 0.00535
-        'VRAD R4'     : 0.12098, # +/- 0.00736
-        'VRAD R5'     : -0.05963, # +/- 0.00760
-        'VRAD R6'     : -0.03826, # +/- 0.00565
-        'VRAD R7'     : 0.01916, # +/- 0.00526
-        'VRAD R8'     : -0.00988, # +/- 0.00601
-        'd_kpc'       : 0.274 ,
+p_fourier = {    'DIAMAVG'     : 1.45108, # +/- 0.00144
+    'E(B-V)'      : 0.09549, # +/- 0.00212
+    'EXCESS EXP'  : 0.4 ,
+    'EXCESS SLOPE': 0.05929, # +/- 0.00184
+    'EXCESS WL0'  : 1.2 ,
+    'METAL'       : 0.06 ,
+    'MJD0'        : 48304.732663390016 ,
+    'P-FACTOR'    : 1.2375, # +/- 0.0211
+    'PERIOD'      : 5.36627561, # +/- 0.00000588
+    'PERIOD1'     : -0.0600, # +/- 0.0271
+    'TEFF A0'     : 5909.59, # +/- 6.17
+    'TEFF A1'     : 472.07, # +/- 3.66
+    'TEFF PHI1'   : 5.91673, # +/- 0.00580
+    'TEFF PHI2'   : 5.4450, # +/- 0.0154
+    'TEFF PHI3'   : 1.3499, # +/- 0.0415
+    'TEFF PHI4'   : 0.5966, # +/- 0.0866
+    'TEFF PHI5'   : 2.338, # +/- 0.237
+    'TEFF R2'     : 0.39779, # +/- 0.00588
+    'TEFF R3'     : -0.15503, # +/- 0.00544
+    'TEFF R4'     : -0.06561, # +/- 0.00523
+    'TEFF R5'     : 0.02219, # +/- 0.00500
+    'VRAD A0'     : -18.4306, # +/- 0.0798
+    'VRAD A1'     : 15.483, # +/- 0.130
+    'VRAD PHI1'   : 2.17859, # +/- 0.00796
+    'VRAD PHI2'   : -1.5853, # +/- 0.0212
+    'VRAD PHI3'   : 6.1507, # +/- 0.0449
+    'VRAD PHI4'   : 4.5615, # +/- 0.0590
+    'VRAD PHI5'   : 2.7519, # +/- 0.0905
+    'VRAD PHI6'   : 10.574, # +/- 0.163
+    'VRAD PHI7'   : 2.280, # +/- 0.302
+    'VRAD PHI8'   : 0.719, # +/- 0.602
+    'VRAD R2'     : -0.41554, # +/- 0.00678
+    'VRAD R3'     : -0.21487, # +/- 0.00535
+    'VRAD R4'     : 0.12098, # +/- 0.00736
+    'VRAD R5'     : -0.05963, # +/- 0.00760
+    'VRAD R6'     : -0.03824, # +/- 0.00568
+    'VRAD R7'     : 0.01914, # +/- 0.00526
+    'VRAD R8'     : -0.00986, # +/- 0.00602
+    'd_kpc'       : 0.274 ,
+
         }
 
 def fit(p=None):
@@ -185,8 +186,8 @@ def fitFromScratch(period=5.366, dist=.25):
          'DIAMAVG':1.5,
       }
 
-    oV1 = 4 # Fourier Components for first
-    oT1 = 2
+    oV1 = 8 # Fourier Components for first
+    oT1 = 6
     # == only Vrad =====================================
     print('fitting VRAD only...', end=' ')
     tech = ['vrad']
@@ -205,12 +206,10 @@ def fitFromScratch(period=5.366, dist=.25):
     p = fit['best']
     print('chi2=%.3f'%fit['chi2'])
 
-    return p
-
     # == fit teff and colors
     print('fitting teff and colors...', end=' ')
 
-    tech = ['color', 'teff']
+    #tech = ['color', 'teff']
     tech = ['teff']
     _obs = [o for o in obs if any([o[1].startswith(t) for t in tech])]
     if len(_obs)>(2*oT1+1):
@@ -231,14 +230,10 @@ def fitFromScratch(period=5.366, dist=.25):
                 any([o[1].startswith('color') for o in _obs])):
             doNotFit.append('E(B-V)')
 
-        fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1,
+        fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=1,
                         normalizeErrors='techniques', ftol=1e-3)
         p = fit['best']
         phi = ((p['MJD0']-mjd0)/p['PERIOD'])%1.0
-        for x in p:
-            if x.startswith('VRAD PHI') and not x.replace('PHI', 'R') in p:
-                k = int(x.split('VRAD PHI')[1])
-                p[x] += k*phi*2*np.pi 
         print('chi2=%.3f'%fit['chi2'])
     else:
         print('not enough data')
@@ -263,7 +258,7 @@ def fitFromScratch(period=5.366, dist=.25):
     # p = fit['best']
     # print('chi2=%.3f'%fit['chi2'])
 
-    show(p)
+    #show(p)
 
     return p
 
