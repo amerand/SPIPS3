@@ -34,8 +34,6 @@ def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
       }
     p.update(firstGuess)
     execution = {}
-    oV = 8 # Fourier Components for first
-    oT = 6
     # == fit teff and colors
     print('fitting Teff profile to teff data...', end=' ')
 
@@ -68,7 +66,8 @@ def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
             doNotFit.append('E(B-V)')
         t0 = time.time()
         fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=maxCores>1, plot=False, maxCores=maxCores,
-                        normalizeErrors='techniques', ftol=1e-3)
+                        normalizeErrors='techniques', ftol=1e-3,
+                        follow=['E(B-V)', 'TEFF A0'])
         p = fit['best']
         print('chi2=%.3f [in %.1fs]'%(fit['chi2'], time.time()-t0))
         execution['Teff'] = time.time()-t0
@@ -115,7 +114,8 @@ def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
         p['MJD0'] += np.round((mjd0-p['MJD0'])/p['PERIOD'], 0)*p['PERIOD']
         t0 = time.time()
         fit = spips.fit(obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=4,
-                        normalizeErrors='techniques', ftol=1e-2)
+                        normalizeErrors='techniques', ftol=1e-2,
+                        follow=['E(B-V)', 'd_kpc'])
         p = fit['best']
         print('chi2=%.3f [in %.1fs]'%(fit['chi2'], time.time()-t0))
         execution['All, fixed Vrad & Teff'] = time.time()-t0
@@ -183,8 +183,6 @@ def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
       }
     p.update(firstGuess)
     execution = {}
-    oV = 6 # Spline nodes
-    oT = 4
 
     # == fit teff and colors
     print('fitting Teff profile to teff data...', end=' ')
