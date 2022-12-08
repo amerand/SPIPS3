@@ -2,6 +2,7 @@ import spips
 import delta_cep_data # contains all the observations
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 import time
 
 def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAVG':1.5, 'TEFF A0':6000}, 
@@ -86,16 +87,16 @@ def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
         p['VRAD R%d'%(k+2)] = 1.0
         p['VRAD PHI%d'%(k+2)] = 0 
 
-    doNotFit = ['MJD0', 'P-FACTOR', 'METAL', 'd_kpc', 'DIAMAVG', 'TEFF A0', 'E(B-V)', 'PERIOD']
+    doNotFit = ['MJD0', 'P-FACTOR', 'METAL', 'd_kpc', 'DIAMAVG', 'TEFF A0', 'E(B-V)']
     for k in p:
         if k.startswith('TEFF '):
             doNotFit.append(k)
     t0 = time.time()
-    fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1, ftol=1e-3)
+    fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1, ftol=1e-3, 
+                    epsfcn=1e-8)
     p = fit['best']
     print('chi2=%.3f [in %.1fs]'%(fit['chi2'], time.time()-t0))
     execution['Vrad'] = time.time()-t0
-
 
     if True and 'Teff' in execution:
         # -- not really needed?
@@ -139,14 +140,14 @@ def fitFromScratchFourier(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
     p['MJD0'] += np.round((mjd0-p['MJD0'])/p['PERIOD'], 0)*p['PERIOD']
     t0 = time.time()
     fit = spips.fit(obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=4,
-                    normalizeErrors='techniques', ftol=1e-4,
+                    normalizeErrors='techniques', ftol=1e-5, epsfcn=1e-8,
                     follow=['d_kpc', 'E(B-V)', 'DIAMAVG', 'TEFF A0'])
     p = fit['best']
     print('chi2=%.3f [in %.0fs]'%(fit['chi2'], time.time()-t0))
     execution['All'] = time.time()-t0
     print(execution)
     print('total execution %.1fmin'%(np.sum([execution[k] for k in execution])/60))
-    return p
+    return fit
 
 def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAVG':1.5, 'TEFF VAL0':6000}, 
                           changeOfPeriodOrder=1, withIrExcess=True, oT=4, oV=6):
@@ -193,12 +194,14 @@ def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
     
     tech = ['teff']
     _obs = [o for o in obs if any([o[1].startswith(t) for t in tech])]
+    maxCores=1
     if len(_obs)<=(2*oT+1):
         print('not enough data')
         print('fitting Teff profile to teff and color data...', end=' ')
         # -- try including colors
         tech = ['teff', 'color']
         _obs = [o for o in obs if any([o[1].startswith(t) for t in tech])]
+        maxCores = 4
 
     if len(_obs)>(2*oT+1):
         mjd = [o[0] for o in _obs if not o[0] is None ]
@@ -213,8 +216,9 @@ def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
                 any([o[1].startswith('color') for o in _obs])):
             doNotFit.append('E(B-V)')
         t0 = time.time()
-        fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=False, plot=False, maxCores=1,
-                        normalizeErrors='techniques', ftol=1e-3)
+        fit = spips.fit(_obs, p, doNotFit=doNotFit, verbose=maxCores>1, plot=False, maxCores=maxCores,
+                        normalizeErrors='techniques', ftol=1e-3, 
+                        follow=['E(B-V)', 'TEFF VAL0'])
         p = fit['best']
         print('chi2=%.3f [in %.1fs]'%(fit['chi2'], time.time()-t0))
         execution['Teff'] = time.time()-t0
@@ -259,7 +263,8 @@ def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
         p['MJD0'] += np.round((mjd0-p['MJD0'])/p['PERIOD'], 0)*p['PERIOD']
         t0 = time.time()
         fit = spips.fit(obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=4,
-                        normalizeErrors='techniques', ftol=1e-2)
+                        normalizeErrors='techniques', ftol=1e-2, 
+                        follow=['E(B-V)', 'd_kpc', 'DIAMAVG'])
         p = fit['best']
         print('chi2=%.3f [in %.1fs]'%(fit['chi2'], time.time()-t0))
         execution['All, fixed Vrad & Teff'] = time.time()-t0
@@ -284,14 +289,73 @@ def fitFromScratchSplines(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAV
     p['MJD0'] += np.round((mjd0-p['MJD0'])/p['PERIOD'], 0)*p['PERIOD']
     t0 = time.time()
     fit = spips.fit(obs, p, doNotFit=doNotFit, verbose=True, plot=False, maxCores=4,
-                    normalizeErrors='techniques', ftol=1e-4, follow=['d_kpc', 'E(B-V)', 'DIAMAVG', 'TEFF VAL0'])
+                    normalizeErrors='techniques', ftol=1e-4, 
+                    follow=['d_kpc', 'E(B-V)', 'DIAMAVG', 'TEFF VAL0', 'VRAD POW'])
     p = fit['best']
     print('chi2=%.3f [in %.0fs]'%(fit['chi2'], time.time()-t0))
     execution['All'] = time.time()-t0
     print(execution)
     print('total execution %.1fmin'%(np.sum([execution[k] for k in execution])/60))
-    return p
+    return fit
 
+def findPeriod(obs, period=5, relativeRange=0.1, Np=1000, plot=None):
+    """
+
+    """
+    typs = [o[1]+str(o[2]) if o[1].startswith('mag') or o[1].startswith('color') else o[1] for o in obs ]
+
+    res = 0
+    p = np.linspace(1-relativeRange, 1+relativeRange, Np)*period
+    # -- get periodogram for each observable separatly
+    for typ in set(typs):
+        t = np.array([o[0] for i,o in enumerate(obs) if typs[i]==typ and not o[0] is None and o[0]>1]) 
+        v = np.array([o[-2] for i,o in enumerate(obs) if typs[i]==typ and not o[0] is None and o[0]>1]) 
+        res += periodogram(t, v, p)
+    # -- find maximum
+    i0 = np.argmax(res)
+    ## d/dx ax**2+bx+c == 0 -> 2ax + b = 0 -> x = -b/2a
+    if i0>0 and i0<len(res)-1:
+        c = np.polyfit(p[i0-1:i0+1]-p[i0], res[i0-1:i0+1], 2)
+        pmax = p[i0]-c[1]/2/c[0]
+        #print('period:', pmax)
+    else:
+        #print("can't find maximum")
+        pmax = None
+    if plot is True:
+        plot = 1
+    if type(plot)==int:
+        plt.close(plot)
+        plt.figure(plot, figsize=(9,7))
+        plt.subplot(121)
+        plt.plot(p, res, label='power')
+        plt.vlines(pmax, 0, max(res), linestyle='dotted', color='g', 
+                label='best period')
+        plt.xlabel('period (days)')
+        plt.legend()
+        mjd0 = np.mean([o[0] for o in obs if not o[0] is None and o[0]>1])
+        for j,typ in enumerate(set(typs)):
+            t = np.array([o[0] for i,o in enumerate(obs) if typs[i]==typ and not o[0] is None and o[0]>1]) 
+            v = np.array([o[-2] for i,o in enumerate(obs) if typs[i]==typ and not o[0] is None and o[0]>1]) 
+            ax = plt.subplot(len(set(typs)),2,2*j+2)
+            ax.yaxis.set_visible(False)
+            plt.plot(((t-mjd0)/pmax)%1, v, '.k')
+            plt.title(typ, x=0.5, y=0.5, fontsize=6)
+            plt.xlim(-0.05,1.05)
+        plt.tight_layout()
+        plt.subplots_adjust(hspace=0)
+    return pmax
+
+def periodogram(t, v, p):
+    """
+    t: times (1D ndarray)
+    v: values (1D ndarray, same length as t)
+    p: periods (1D array, same units as t)
+    
+    return power spectrum: 1D ndarray, same length as p
+    """
+    _v = (v-np.mean(v))/np.std(v)
+    return np.abs(np.mean(np.cos(2*np.pi*t[:,None]/p[None,:])*_v[:,None] + 
+                       1j*np.sin(2*np.pi*t[:,None]/p[None,:])*_v[:,None], axis=0))**2
 
 
     
