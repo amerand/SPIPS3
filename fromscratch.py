@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-def fitFromScratch(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAVG':1.5, 'TEFF':6000}, 
+def fitFromScratch(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAVG':1.5, 'TEFFAVG':6000}, 
                     vradSplines=False, teffSplines=False,
                     changeOfPeriodOrder=1, withIrExcess=True, oT=5, oV=8):
     """
@@ -14,7 +14,7 @@ def fitFromScratch(obs, firstGuess={'PERIOD':5.3663, 'd_kpc':.25, 'DIAMAVG':1.5,
     firstGuess: provide initial guess as dict. Mandatory is "PERIOD" (in days). Recommended are
         'd_kpc': distance in kpc
         'DIAMAVG': average angular diameter in mas
-        'TEFF A0': average effective temperature in K
+        'TEFFAVG': average effective temperature in K
     
     changeOfPeriodOrder: 0 for no change of period, 1 for linear etc (default 1)
     
