@@ -2358,7 +2358,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
 
     y_min = iDiam(X).min()
     y_max = iDiam(X).max()
-    if iDiam(X).mean()>1.:
+    if iDiam(X).mean()>.5:
         lab = 'model ptp=%5.2fmas (%3.1f%%)'%(np.ptp(iDiam(X)),
                                         100*np.ptp(iDiam(X))/np.mean(iDiam(X)))
     else:
@@ -2599,7 +2599,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         else:
             ax2.set_ylabel('Ang. diam. (uas)')
             yti = ax2.get_yticks()
-            ax2.set_yticklabels([str(__yti*1000) for __yti in yti])
+            ax2.set_yticklabels(['%.0f'%(__yti*1000) for __yti in yti])
 
 
     next_plot = 3
@@ -2996,26 +2996,38 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                     plt.plot(xmo, np.array(modl)+j_excess, color=colorModel,
                               linewidth=1.5, linestyle='dashed',
                               label='no CSE', alpha=0.5)
-            plt.legend(loc='upper left', prop={'size':7}, numpoints=1,
+            plt.legend(loc='lower left', prop={'size':7}, numpoints=1,
                         frameon=False)
-
-            y_min = min(min(modl), np.min([data[k]-0*edata[k] for k in w[0]]))
-            y_max = max(max(modl), np.max([data[k]+0*edata[k] for k in w[0]]))
+            _mags = [data[k]-0*edata[k] for k in w[0]]
+            y_min = min(min(modl), np.min(_mags))
+            y_max = max(max(modl), np.max(_mags))
             plt.text(xmo[np.argmax(modl)]%1+0.1, y_min, filt,
-                     va='bottom', ha='right', size=12, color='k',
-                     alpha=0.33, fontweight='bold')
-            plt.ylim(y_min-0.15*(y_max-y_min), y_max+0.25*(y_max-y_min))
+                     va='top', ha='right', size=9, color=(0.3,0.5,0.7),
+                     alpha=0.3, fontweight='bold')
+
+            plt.ylim(y_min-0.15*(y_max-y_min), y_max+0.15*(y_max-y_min))
             plt.xlim(-0.1,1.1)
             uni = labelPanel(uni)
-            plt.text(1.05, plt.ylim()[1]-0.05*(plt.ylim()[1]-plt.ylim()[0]),
-                     r'$\chi^2$=%4.2f'%chi2, va='top', ha='right',
+            plt.text(1.05, y_max+0.05*(y_max - y_min),
+                     r'$\chi^2$=%4.2f'%chi2, va='bottom', ha='right',
                      size=7)
             _y = ax.get_yticks()
             if len(_y>7):
                 ax.set_yticks(_y[1:-1][::2])
             elif len(_y>5):
                 ax.set_yticks(_y[1:-1])
-            ax.tick_params(axis='both', which='major', labelsize=10)
+            if np.ptp(_mags)<0.2:
+                yt = [np.floor(10*np.min(_mags))/10, 
+                      np.ceil(10*np.max(_mags))/10]
+            else:                
+                yt = [np.ceil(10*np.min(_mags))/10, 
+                      np.floor(10*np.max(_mags))/10]
+
+            ax.yaxis.set_ticks(yt)
+            ax.yaxis.set_ticklabels(['%.1f'%_yt for _yt in yt])
+            ax.tick_params(axis='both', which='major', labelsize=7)
+            ax.invert_yaxis() 
+            ax.set_xlabel('pulsation phase')
 
     for k in list(excess.keys()):
         excess[k] = np.array(excess[k])
@@ -3173,30 +3185,42 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                 plt.plot(xmo, np.array(modl)+e, color=colorModel,
                          linewidth=1.5, linestyle='dashed',
                          label='no CSE', alpha=0.5)
-            plt.legend(loc='upper left', prop={'size':7}, numpoints=1,
+            plt.legend(loc='lower left', prop={'size':7}, numpoints=1,
                        frameon=False)
+            _mags = [data[k]-0*edata[k] for k in w[0]] 
+            y_min = min(min(modl), np.min(_mags))
+            y_max = max(max(modl), np.max(_mags))
 
-            y_min = min(min(modl), np.min([data[k]-0*edata[k] for k in w[0]]))
-            y_max = max(max(modl), np.max([data[k]+0*edata[k] for k in w[0]]))
+            plt.text(xmo[np.argmax(modl)]%1+0.1, y_min, 
+                     filt.replace('-', ' -\n'),
+                     va='top', ha='right', size=9, color=(0.3,0.5,0.7),
+                     alpha=0.3, fontweight='bold')
 
-            plt.text(xmo[np.argmax(modl)]%1+0.1, y_min, filt.replace('-', ' -\n'),
-                     va='bottom', ha='right', size=12, color='k',
-                     alpha=0.33, fontweight='bold')
-            plt.ylim(y_min-0.15*(y_max-y_min), y_max+0.25*(y_max-y_min))
+            plt.ylim(y_min-0.2*(y_max-y_min), y_max+0.2*(y_max-y_min))
             plt.xlim(-0.1,1.1)
             uni = labelPanel(uni)
-            plt.text(1.05, plt.ylim()[1]-0.05*(plt.ylim()[1]-plt.ylim()[0]),
-                     r'$\chi^2$=%4.2f'%chi2, va='top', ha='right',
+            plt.text(1.05, y_max+0.05*(y_max - y_min),
+                     r'$\chi^2$=%4.2f'%chi2, va='bottom', ha='right',
                      size=7)
             _y = ax.get_yticks()
             if len(_y>7):
                 ax.set_yticks(_y[1:-1][::2])
             elif len(_y>5):
                 ax.set_yticks(_y[1:-1])
-            ax.tick_params(axis='both', which='major', labelsize=10)
+            if np.ptp(_mags)<0.1:
+                yt = [np.floor(20*np.min(_mags))/20, 
+                      np.ceil(20*np.max(_mags))/20]
+            else:                
+                yt = [np.ceil(20*np.min(_mags))/20, 
+                      np.floor(20*np.max(_mags))/20]
 
+            ax.yaxis.set_ticks(yt)
+            ax.yaxis.set_ticklabels(['%.2f'%_yt for _yt in yt])
+            ax.tick_params(axis='both', which='major', labelsize=7)
             # -- last plot gets the xlabel set
-            plt.xlabel('pulsation phase')
+            ax.invert_yaxis() # to correlate with temperature
+            ax.set_xlabel('pulsation phase')
+
 
     if len(MJDoutliers)>0:
         print('ALL MJD outliers:', MJDoutliers)
@@ -3342,7 +3366,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         # _y = (phi[mjd>1]-phi0[mjd>1]+0.5)%1.-0.5
         # _x = mjd[mjd>1]
 
-        print(' > observed period change: %3.2f s/yr'%periodChangeRate)
+        print(' > observed period change: %.4f s/yr'%periodChangeRate)
         print(' > model prediction from Fadeyev 2014 (blue edge -> red edge)')
         x_crossing = {}
         crossing, dist_crossing = 0, 1e6
