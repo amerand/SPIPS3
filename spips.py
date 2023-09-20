@@ -3502,7 +3502,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                                       array=np.array(res)))
         cols.append(pyfits.Column(name='PHASE', format='E',
                                       array=phi))
-        cols.append(pyfits.Column(name='PERIOD', format='E11.8',
+        cols.append(pyfits.Column(name='PERIOD', format='D',
                                       array=Period))
 
         #hducols = pyfits.ColDefs(cols)
