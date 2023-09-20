@@ -4,7 +4,8 @@ from numpy import linalg
 import time
 from matplotlib import pyplot as plt
 from functools import reduce
-
+import multiprocessing
+import sys
 """
 IDEA: fit Y = F(X,A) where A is a dictionnary describing the
 parameters of the function.
@@ -527,11 +528,32 @@ def leastsqFit(func, x, params, y, err=None, fitOnly=None,
                'not converging':notconverg,
                'factor':factor,
         }
-        if type(verbose)==int and verbose>2 and np.size(cor)>1:
+        if type(verbose)==int and verbose>2 and np.size(cor)>1 and showBest:
             dispCor(pfix)
     return pfix
 
-def randomParam(fit, N=None, x='auto'):
+_prog_N = 1
+_prog_Nmax = 0
+_prog_t0 = time.time()
+def progress(results=None):
+    global _prog_N, _prog_Nmax, _prog_t0
+    _nb = 60 # length of the progress bar
+    tleft = (time.time()-_prog_t0)/max(_prog_N, 1)*(_prog_Nmax-_prog_N)
+    if tleft>100:
+        tleft = '%3.0fmin'%(tleft/60)
+    else:
+        tleft = '%3.0fs  '%(tleft)
+    fmt = '%'+'%d'%int(np.ceil(np.log10(_prog_Nmax)))+'d'
+    fmt = '%s/%s'%(fmt, fmt)+' %s left'
+    res = time.asctime()+': '+\
+        '['+bytes((219,)).decode('cp437')*int(_nb*_prog_N/max(_prog_Nmax, 1))+\
+        '.'*(_nb-int(_nb*_prog_N/max(_prog_Nmax, 1))) + ']'+\
+        fmt%(_prog_N, _prog_Nmax, tleft)+'\r'
+    #print(res)
+    sys.stdout.write(res)
+    _prog_N+=1
+
+def randomParam(fit, N=None, x='auto', multi=False):
     """
     get a set of randomized parameters (list of dictionnaries) around the best
     fited value, using a gaussian probability, taking into account the correlations
@@ -542,6 +564,7 @@ def randomParam(fit, N=None, x='auto'):
     returns a fit dictionnary with: 'ymin', 'ymax' and 'r_param' (a list of the
     randomized parameters)
     """
+    global _prog_N, _prog_Nmax, _prog_t0
     if N is None:
         N = len(fit['x'])
     m = np.array([fit['best'][k] for k in fit['fitOnly']])
@@ -555,10 +578,25 @@ def randomParam(fit, N=None, x='auto'):
     tmp = []
     if x == 'auto':
         x = fit['x']
-    if not x is None:
-        for r in res:
-            tmp.append(fit['func'](x, r))
-        tmp = np.array(tmp)
+    if not x is None: 
+        if not multi:
+            for r in res:
+                tmp.append(fit['func'](x, r))
+            tmp = np.array(tmp)
+        else:
+            if type(multi)==int:
+                pool = multiprocessing.Pool(multi)
+            else:
+                pool = multiprocessing.Pool()
+            _prog_N = 1
+            _prog_Nmax = N
+            _prog_t0 = time.time()
+            M = []
+            for r in res:
+                M.append(pool.apply_async(fit['func'], (x, r, ), callback=progress))
+            pool.close()
+            pool.join() 
+            tmp = np.array([m.get(timeout=1) for m in M])
         fit['all_y'] = tmp
         fit['r_y'] = fit['func'](x, fit['best'])
         fit['r_ym1s'] = np.percentile(tmp, 16, axis=0)
