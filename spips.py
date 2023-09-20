@@ -617,8 +617,11 @@ def fit2html(f, root='spips', directory='./', makePlots=True):
     page = page.replace('__filename1__', filename1).replace('__filename2__', filename2)
     page = page.replace('__figure0__',
                 os.path.basename([x for x in f['export']['FIG'] if 'Fig0' in x][0]))
-    page = page.replace('__figure1__',
-                os.path.basename([x for x in f['export']['FIG'] if 'Fig1' in x][0]))
+    try:
+        page = page.replace('__figure1__',
+                    os.path.basename([x for x in f['export']['FIG'] if 'Fig1' in x][0]))
+    except:
+        pass
 
     fi.write(page)
     fi.close()
@@ -831,7 +834,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
     - 'METAL:'' optional keyword to give the metalicity (0 for Solar)
     - 'MJD0', 'PERIOD': are the pulsation ephemeris (period in days)
     - optional: PERIOD1, PERIOD2, the 1rst and second order period variations
-    - DIAM0: is the average angular diameter in mas
+    - DIAMAVG: is the average angular diameter in mas
     - E(B-V) is the color excess (for redenning correction).
     - Rspec is the spectral resolution /1000. (will convolve outpu spectra)
     - Vspec,  additional velocity for spectra in km/s
@@ -1269,7 +1272,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
     if 'DIAM0' in list(a.keys()):
         Diam += a['DIAM0']
     elif 'DIAMAVG' in list(a.keys()):
-        Diam -= Diam[:-1].mean() - a['DIAMAVG']
+        Diam += a['DIAMAVG'] - Diam[:-1].mean() 
     # else:
     #     # -- Fourier Integral
     #     Diam = a['DIAM0']+0*phi_intern
@@ -1283,9 +1286,9 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
     expectedRadius = 10**(0.75*np.log10(Period.mean())+1.10)
     if verbose:
         print('AVG ANGULAR DIAM:', round(Diam.mean(),4), 'mas')
-        print('AVG RADIUS:', round(linRadius.mean()/C_Rsol,3), 'Rsol', end=' ')
-        print('log(R)=', round(np.log10(linRadius.mean()/C_Rsol),2))
-        print('exp. RADIUS:', round(expectedRadius,2), end=' ')
+        print('AVG RADIUS      :', round(linRadius.mean()/C_Rsol,3), 'Rsol', end=' ')
+        print('[log(R)=', round(np.log10(linRadius.mean()/C_Rsol),2), ']')
+        print('exp. RADIUS     :', round(expectedRadius,2), end=' ')
         print('Rsol (P-R from Molinaro et al. 2012)')
     fits_model['AVG_ANGDIAM'] = (round(Diam.mean(),4), 'mas')
     fits_model['AVG_RADIUS'] = (round(linRadius.mean()/C_Rsol,3), 'Rsol')
@@ -2601,7 +2604,6 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
             yti = ax2.get_yticks()
             ax2.set_yticklabels(['%.0f'%(__yti*1000) for __yti in yti])
 
-
     next_plot = 3
 
     if False: #-- plot logg
@@ -2815,7 +2817,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         modlD = [] # only diam effects
         teffAVG = iTeff(np.linspace(0,1,100)[:-1]).mean()
 
-        xmo = np.linspace(-0.5,1.5,100)[:-1]
+        xmo = np.linspace(-0.5,1.5,1000)[:-1]
         wl0 = photfilt2.effWavelength_um(filt)
         excess['wl'].append(wl0)
         for x_ in xmo: # for each phase of the model
@@ -3476,7 +3478,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
 
         # -- data
         cols=[]
-        cols.append(pyfits.Column(name='MJD', format='E',
+        cols.append(pyfits.Column(name='MJD', format='D',
                                       array=np.array([o[0] for o in x])))
         # -- this encodes lots of different possible things...:
         tmp = []
@@ -3535,9 +3537,11 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         return export
     return res
 
-def importFits(fitsname, runSPIPS=False, doNotFit=False):
+def importFits(fitsname, runSPIPS=False):
     """
     read fits and extract parameters dictionnary and data vector
+    
+    return a, obs, [doNotFit]
     """
     f = pyfits.open(fitsname)
     if 'STARNAME' in list(f[0].header.keys()):
@@ -3585,10 +3589,7 @@ def importFits(fitsname, runSPIPS=False, doNotFit=False):
     if runSPIPS:
         model(obs, a, plot=True, starName=starName, verbose=True)
     else:
-        if doNotFit:
-            return a, obs, doNotFit
-        else:
-            return a, obs
+        return a, obs, doNotFit
 
 def check36_45colorModulation(fitsname, plot=True):
     f = pyfits.open(fitsname, mode='update')
@@ -3706,7 +3707,7 @@ def pseudoStat(x):
 
 _maxCores = None
 
-__bunch = 1
+__bunch = 50
 def modelM(x,p, bunch=None, maxCores=None):
     """
     parallelized version of model. 'bunch' is the size of the data to
@@ -4285,7 +4286,7 @@ def fitPhotDiam(data, firstguess=None, fitOnly=['diam', 'Teff']):
     fit = dpfit.leastsqFit(funcPhotDiam, data, firstguess,
                         np.array([d[1] for d in data]),
                         np.array([d[2] for d in data]),
-                        fitOnly=fitOnly, verbose=0)
+                        fitOnly=fitOnly, verbose=2)
     return fit
 
 
@@ -4627,33 +4628,42 @@ def SBRelation(filter1, filter2, teffMin=5000., teffMax=7000.,
     diam = 1+0*np.random.rand(len(Teff))
     mag1 = np.array([photometrySED(diam[k], Teff[k], filter1, logg=1.5)[0,0] for k in range(N)])
     mag2 = np.array([photometrySED(diam[k], Teff[k], filter2, logg=1.5)[0,0] for k in range(N)])
+
+    _cc2t = np.polyfit(mag1-mag2, np.log10(Teff), 2)
+    _c2t = lambda x: 10**np.polyval(_cc2t, x)
+    _ct2c = np.polyfit(np.log10(Teff), mag1-mag2,  2)
+    _t2c = lambda x: np.polyval(_ct2c, np.log10(x))
+
     f = dpfit.leastsqFit(diamSB, [mag1, mag2], {'a1':1.0, 'a0':1.0}, diam, verbose=verbose)
     form = r'F'+filter1+' = %4.3f*('+filter1+' - '+filter2+') + %4.3f'
     form = form%(f['best']['a1'], f['best']['a0'])
+    fittyp = 'linear'
     if ((diam-f['model'])/diam).ptp()>0.001 and not forceLin:
         f = dpfit.leastsqFit(diamSB, [mag1, mag2], {'a2':0.0, 'a1':1.0, 'a0':1.0},
                              diam, verbose=verbose)
         form = r'F'+filter1+' = %4.3f*('+filter1+' - '+filter2+')**2 + %4.3f*('+filter1+' - '+filter2+') + %4.3f'
         form = form%(f['best']['a2'], f['best']['a1'], f['best']['a0'])
+        fittyp = 'parabolic'
 
     c = K04[(filter1[0], filter2[0])]
     diamK04 = diamSB((mag1, mag2), {'a0':c[1], 'a1':c[0]} )
 
-
     if plot:
         plt.close(0)
         plt.figure(0, figsize=(5,6))
-        plt.subplot(211)
+        ax1 = plt.subplot(211)
         plt.plot(mag1-mag2, 4.2207 - 0.1*mag1 - 0.5*np.log10(diam), 'ok',
                     label='SPIPS grid', alpha=0.2)
         plt.plot(mag1-mag2, 4.2207 - 0.1*mag1 - 0.5*np.log10(f['model']), '-b',
-                label='linear fir to SPIPS')
+                label=fittyp+' fit to SPIPS')
         plt.plot(mag1-mag2, 4.2207 - 0.1*mag1 - 0.5*np.log10(diamK04), '-r',
                 label='K04')
         plt.ylabel('surface brightness F$_{%s}$'%filter1.replace('_', ' '))
         plt.legend()
-        plt.subplot(212)
-        plt.plot(mag1-mag2, 100*(f['model']-diam)/diam, '-k', label='SB - SPIPS')
+        ax1_bis = ax1.secondary_xaxis('top', functions=(_c2t, _t2c))
+
+        ax2 = plt.subplot(212, sharex=ax1)
+        plt.plot(mag1-mag2, 100*(f['model']-diam)/diam, '-k', label='polyfit - SPIPS')
         plt.plot(mag1-mag2, 100*(diamK04-diam)/diam, '-r', label='K04 - SPIPS')
 
         plt.xlabel(filter1+' - '+filter2)
@@ -4665,6 +4675,8 @@ def SBRelation(filter1, filter2, teffMin=5000., teffMax=7000.,
         plt.hlines((-1,1), (mag1-mag2).min(), (mag1-mag2).max(),
                     linestyle='dotted')
         plt.ylim(-10,10)
+        ax2_bis = ax2.secondary_xaxis('top', functions=(_c2t, _t2c))
+
         plt.tight_layout()
     if verbose:
         print(form)
