@@ -3479,7 +3479,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         # -- data
         cols=[]
         cols.append(pyfits.Column(name='MJD', format='D',
-                                  array=np.array([float(o[0]) for o in x])))
+                array=np.array([np.nan if o[0] is None else float(o[0]) for o in x])))
         # -- this encodes lots of different possible things...:
         tmp = []
         for o in x:
