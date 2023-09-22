@@ -121,7 +121,7 @@ p_fourier = {    'DIAMAVG'     : 1.45108, # +/- 0.00144
         'd_kpc'       : 0.274 ,
         }
 
-def fit(p=None):
+def fit(p=None, exportFits=False, plot=True):
     """
     p: dictionnary containgin the model
     """
@@ -139,8 +139,68 @@ def fit(p=None):
             ftol=5e-4, # stopping tolerance on chi2
             epsfcn=1e-8, # by how much parameters will vary
             maxfev=500, # maximum number of iterations
-            maxCores=4, # max number of CPU cores, None will use all available
+            maxCores=8, # max number of CPU cores, None will use all available
             starName='delta Cep',
+            follow=['P-FACTOR'], # list here parameters you want to see during fit
+            exportFits=exportFits, plot=plot,
+            )
+    spips.dispCor(f) # show the correlation matrix between parameters
+    if not exportFits:
+        return f
+
+
+
+def fitNoVrad(p=None):
+    """
+    p: dictionnary containgin the model
+    """
+    if p is None:
+        p = p_splines
+    # - list parameters which we do not wish to fit
+    doNotFit= ['MJD0','METAL', 'd_kpc', 'EXCESS WL0', 'EXCESS EXP', #'EXCESS SLOPE', 
+            'VRAD VAL0', 'P-FACTOR']
+    fitOnly = None
+    # - alternatively, we can list the only parameters we wich to fit
+    # fitOnly = filter(lambda x: x.startswith('TEFF ') or x.startswith('VRAD '), p.keys())
+    # obs = filter(lambda o: 'vrad' in o[1] or 'teff' in o[1], obs)
+    #fitOnly=['P-FACTOR', 'DIAMAVG']
+    f = spips.fit([o for o in obs if not o[1].startswith('vrad;')], 
+            p, doNotFit=doNotFit, fitOnly=fitOnly,
+            normalizeErrors='techniques', # 'observables' is the alternative
+            ftol=5e-4, # stopping tolerance on chi2
+            epsfcn=1e-8, # by how much parameters will vary
+            maxfev=500, # maximum number of iterations
+            maxCores=8, # max number of CPU cores, None will use all available
+            starName='delta Cep no vrad',
+            follow=['P-FACTOR'], # list here parameters you want to see during fit
+            exportFits=True,
+            )
+    spips.dispCor(f) # show the correlation matrix between parameters
+    return
+
+def fitNoRadius(p=None):
+    """
+    p: dictionnary containgin the model
+    """
+    if p is None:
+        p = p_splines
+    # - list parameters which we do not wish to fit
+    doNotFit= ['MJD0','METAL', 'd_kpc', 'EXCESS WL0', 'EXCESS EXP', 'EXCESS SLOPE',
+            'P-FACTOR', 'EXCESS SLOPE', 'E(B-V)', 'DIAMAVG', '']
+    fitOnly = None
+    # - alternatively, we can list the only parameters we wich to fit
+    # fitOnly = filter(lambda x: x.startswith('TEFF ') or x.startswith('VRAD '), p.keys())
+    # obs = filter(lambda o: 'vrad' in o[1] or 'teff' in o[1], obs)
+    #fitOnly=['P-FACTOR', 'DIAMAVG']
+    f = spips.fit([o for o in obs if o[1].startswith('vrad;') or 
+                                    o[1].startswith('teff;')], 
+            p, doNotFit=doNotFit, fitOnly=fitOnly,
+            normalizeErrors='techniques', # 'observables' is the alternative
+            ftol=5e-4, # stopping tolerance on chi2
+            epsfcn=1e-8, # by how much parameters will vary
+            maxfev=500, # maximum number of iterations
+            maxCores=8, # max number of CPU cores, None will use all available
+            starName='delta Cep no radius',
             follow=['P-FACTOR'], # list here parameters you want to see during fit
             exportFits=True,
             )
