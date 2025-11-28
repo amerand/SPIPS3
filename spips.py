@@ -4761,7 +4761,7 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
             k0 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[0]]
         else:
             k0 = None
-        key0 = str(k0)+'-'+wl
+        key0 = str(k0)+'-'+str(Rv)+'-'+wl
 
         if not key0 in __Algrid:
             if k0 is None:
@@ -4779,7 +4779,7 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
             k1 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[1]]
         else:
             k1 = None
-        key1 = str(k1)+'-'+wl
+        key1 = str(k1)+'-'+str(Rv)+'-'+wl
 
         if not key1 in __Algrid:
             if k1 is None:
@@ -4818,7 +4818,7 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
         wl_50 = [0.12, 0.13, 0.15, 0.18, 0.20, 0.218, 0.24,
                0.26, 0.28, 0.33, 0.365, 0.44, 0.55, 0.7, 0.9, 1.25, 1.65, 2.2, 3.4, 5,
                7, 9, 9.7, 10, 12, 15, 18, 20, 25, 35, 60, 100, 250]
-        ### A_lambda / A_V for Rv = 3.1
+        ### A_lambda / A_V for Rv = 3.5
         AlAv_50 = [1.74, 1.6, 1.49, 1.52, 1.74, 1.97, 1.68,
                 1.5, 1.42, 1.35, 1.33, 1.20, 1.0, .794, .556, .327, .204, .125, .059, .031,
                 0.23, 0.51, 0.68, .063, 0.032, 0.017, 0.027, 0.025, 0.016, 0.0042, 0.0023, 0.0013, 0.0049]
