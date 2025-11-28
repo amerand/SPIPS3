@@ -4722,11 +4722,11 @@ def computeAlGrid():
         t = photfilt2.Transmission(filt)(l)
         for T in __SPE.keys(): # for each temperature
             s = np.interp(l, __SPE[T]['WAVEL'], __SPE[T]['FLAMBDA'])
-            key = str(T)+'-'+filt
+            key = str(T)+'-3.1-'+filt
             __Algrid[key] = np.sum(Alambda_Exctinction(l, EB_V=1)*s*t*l)/np.sum(s*t*l)
     return __Algrid
 
-def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
+def Alambda_Exctinction(wl, EB_V=1.0, Rv=3.1, Teff=6000.):
     """
     wl in microns of filter name. Returns A(lambda) for each wavelength.
 
@@ -4862,7 +4862,6 @@ if False:
 # == Teff=6000K, logg=1.5 spectra for computing reddenning:
 try:
     __SPE.keys()
-
 except:
     filename = 'BW2_ATLAS9_aLambdaSPE.dpy'
     if os.path.exists(os.path.join(_dir_data, filename)):
