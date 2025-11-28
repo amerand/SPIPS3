@@ -4723,7 +4723,7 @@ def computeAlGrid():
         for T in __SPE.keys(): # for each temperature
             s = np.interp(l, __SPE[T]['WAVEL'], __SPE[T]['FLAMBDA'])
             key = str(T)+'-3.1-'+filt
-            __Algrid[key] = np.sum(Alambda_Exctinction(l, EB_V=1)*s*t*l)/np.sum(s*t*l)
+            __Algrid[key] = np.sum(Alambda_Exctinction(l, EB_V=1, Rv=3.1)*s*t*l)/np.sum(s*t*l)
     return __Algrid
 
 def Alambda_Exctinction(wl, EB_V=1.0, Rv=3.1, Teff=6000.):
