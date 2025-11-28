@@ -933,6 +933,14 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
             title_excess = 'IR$_{ex}$ = %5.3f(%s-%5.3f) mag'%(
                                         a['EXCESS SLOPE'], r'$\lambda$', a['EXCESS WL0'] )
         k_excess = f_excess(2.12)
+    elif 'EXCESS ALPHA' in a and 'EXCESS BETA' in a and 'EXCESS WL0' in a:
+        # -- prescription from Hocde+ 2023, note: different convention for sign!
+        f_excess = lambda x: a['EXCESS ALPHA']*(1/(1+np.exp(a['EXCESS BETA']*(x-a['EXCESS WL0'])))-1/2)
+        title_excess = 'IR$_{ex}$ = %5.3f(1/(1+$e^{%5.3f[%s-%5.3f]}$)-1/2) mag'%(
+                                        a['EXCESS ALPHA'], a['EXCESS BETA'], 
+                                        r'\lambda', a['EXCESS WL0'] )
+        k_excess = f_excess(2.12)
+
     else:
         f_excess = None
 
@@ -2181,7 +2189,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
             for df in [-1,0,1]:
                 if plot:
                     plt.errorbar(phi[w][_w]+df, [data[k] for k in w[0][_w]],
-                        yerr=[edata[k] for k in w[0][_w]], linestyle='none',
+                        yerr=np.abs([edata[k] for k in w[0][_w]]), linestyle='none',
                         marker='.', alpha=0.5, label=s if df==0 else '',
                         markersize=3, color=color)
         allChi2.append(('VPULS', chi2))
@@ -2204,7 +2212,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         # -- plot nodes
         if plot and not uncer is None:
             plt.errorbar(xpV,ypV-Vgamma, fmt='.k', markersize=9,
-                            xerr=exp, yerr=eyp)
+                            xerr=exp, yerr=np.abs(eyp))
         if not useFourierVpuls and plot and False:
             plt.plot(xp, yp-Vgamma, 'pw', markersize=9,
                         label='Spline Nodes - V$_{gamma}$', alpha=0.8)
@@ -2259,7 +2267,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                 ### data
                 if plot:
                     plt.errorbar(phi[w][_w]+df-vrad_phase_offset, [data[k] for k in w[0][_w]],
-                        yerr=[edata[k] for k in w[0][_w]], linestyle='none',
+                        yerr=np.abs([edata[k] for k in w[0][_w]]), linestyle='none',
                         marker='.', label=s if df==0 else '',
                         markersize=3, color=color,
                         alpha=0.2 if any([edata[k]<0 for k in w[0][_w]]) else 1)
@@ -2394,7 +2402,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                     if not np.isscalar(x[i][2]) and np.abs(x[i][2][0]-2.2)<0.3:
                         plotK = True
                         if plot:
-                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=x[i][-1],
+                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=np.abs(x[i][-1]),
                                     fmt='p', color=baselineC(x[i][2][1]),
                                     alpha=0.7, markersize=4,
                                     label=r'$\theta$Ross$_K$ $\chi^2$=%3.1f'%chi2 if _label1 else '')
@@ -2404,7 +2412,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                     elif not np.isscalar(x[i][2]) and np.abs(x[i][2][0]-1.65)<0.3:
                         plotH = True
                         if plot:
-                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=x[i][-1],
+                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=np.abs(x[i][-1]),
                                     fmt='d', color=baselineC(x[i][2][1]),
                                     alpha=0.7, markersize=4,
                                     label=r'$\theta$Ross_H $\chi^2$=%3.1f'%chi2 if _label1 else '')
@@ -2413,7 +2421,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                         _label1 = False
                     else:
                         if plot:
-                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=x[i][-1],
+                            ax2.errorbar(phi[i]+df, x[i][-2], yerr=np.abs(x[i][-1]),
                                     fmt='o', color='0.5',
                                     alpha=0.7, markersize=4,
                                     label=r'$\theta$Ross $\chi^2$=%3.1f'%chi2 if _label2 else '')
@@ -2423,7 +2431,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
             else:
                 if plot:
                     ax2.errorbar(phi[w]+df, [data[k] for k in w[0]],
-                                yerr=[edata[k] for k in w[0]],
+                                yerr=np.abs([edata[k] for k in w[0]]),
                                 fmt='.', color=(0.1, 0.3, 0.8), alpha=0.6,
                                 label=r'$\theta$Ross $\chi^2$=%3.1f'%chi2 if _label2 else '',
                                 markersize=4)
@@ -2468,7 +2476,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                         # -- baseline given and in the K band:
                         if not np.isscalar(x[i][2]) and np.abs(x[i][2][0]-2.2)<0.4:
                             if plot:
-                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=x[i][-1],
+                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=np.abs(x[i][-1]),
                                         fmt='s', color=baselineC(x[i][2][1]),
                                         alpha=0.7, markersize=4,
                                         label=r'UD_K->$\theta$Ross $\chi^2$=%3.1f'%chi2 if _label1 else '')
@@ -2477,7 +2485,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                             _label1 = False
                         else:
                             if plot:
-                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=x[i][-1],
+                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=np.abs(x[i][-1]),
                                         fmt='s', color='0.5', alpha=0.7, markersize=4,
                                         label=r'UD_K->$\theta$Ross $\chi^2$=%3.1f'%chi2 if _label2 else '')
                             if _label2:
@@ -2503,7 +2511,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                         # -- baseline given and in the H band:
                         if not np.isscalar(x[i][2]) and np.abs(x[i][2][0]-1.65)<0.3:
                             if plot:
-                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=x[i][-1],
+                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=np.abs(x[i][-1]),
                                             fmt='d' if x[i][-1]>0 else 'x',
                                             color=baselineC(x[i][2][1]),
                                             alpha=0.7, markersize=4,
@@ -2514,7 +2522,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                             _label1 = False
                         else:
                             if plot:
-                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=x[i][-1],
+                                ax2.errorbar(phi[i]+df, x[i][-2]/UD_LD, yerr=np.abs(x[i][-1]),
                                             fmt='d' if x[i][-1]>0 else 'x',
                                             color='0.5', alpha=0.7, markersize=4,
                                             label=r'UD_H->$\theta$ $\chi^2$=%3.1f'%chi2 if _label2 else '')
@@ -2544,14 +2552,14 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
                     wi = np.where([edata[k]>0 for k in w__[0]])
                     if plot and len(wi[0])>0:
                         ax2.errorbar(phi[w__]+df, np.array([data[k] for k in w__[0]])/UD_LD,
-                                yerr=np.array([edata[k] for k in w__[0]])/UD_LD,
+                                yerr=np.abs([edata[k] for k in w__[0]])/UD_LD,
                                 fmt='.', color=colors[i%len(colors)],
                                 markersize=4, alpha=0.7,
                                 label=r'UD$_{%s\mu m}$->$\theta$Ross $\chi^2$=%3.1f'%(f, chi2) if df==0 else '')
                     wi = np.where([edata[k]<=0 for k in w__[0]])
                     if plot and len(wi[0])>0:
                         ax2.errorbar(phi[w__]+df, np.array([data[k] for k in w__[0]])/UD_LD,
-                                yerr=np.array([edata[k] for k in w__[0]])/UD_LD,
+                                yerr=np.abs([edata[k] for k in w__[0]])/UD_LD,
                                 fmt='x', color=colors[i%len(colors)],
                                 markersize=4, alpha=0.7,
                                 label=r'UD$_{%s\mu m}$->$\theta$Ross [IGNORED]'%(f) if df==0 else '')
@@ -2565,7 +2573,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
         for b in [100. , 200. , 300.]:
             bias = np.array([diamBiasK(d, b, 10**(k_excess/2.5)-1) for d in iDiam(X)])
             if plot:
-                ax2.plot(X, iDiam(X)*bias, '-', linewidth=2, color=baselineC(b),
+                ax2.plot(X, iDiam(X)*bias, linewidth=2, color=baselineC(b),
                          alpha=0.8, linestyle='dashed')
                 if np.interp(0.5, X, iDiam(X)*bias)<y_max+ 0.05*(y_max-y_min):
                     ax2.text(0.5, np.interp(0.5, X, iDiam(X)*bias), 'B=%3.0fm (K)'%b,
@@ -2735,7 +2743,7 @@ def model(x, a, plot=False, starName=None, verbose=False, uncer=None, showOutlie
             if plot:
                 for df in [-1,0,1]:
                     plt.errorbar(phi[w][wi]+df-teff_phase_offset, [data[k]*1e-3 for k in w[0][wi]],
-                                 yerr=[edata[k]*1e-3 for k in w[0][wi]],
+                                 yerr=np.abs([edata[k]*1e-3 for k in w[0][wi]]),
                                 fmt='.', markersize=5, color=colors[i%len(colors)],
                                 label='%s'%(ori) if df==0 else '')
         wi = np.where([edata[k]<=0 for k in w[0]])
@@ -4749,22 +4757,39 @@ def Alambda_Exctinction(wl, EB_V=0.0, Rv=3.1, Teff=6000.):
                         photfilt2.wavelRange(wl)[1],
                         100)
         # -- interpolation:
-        k0 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[0]]
+        if Teff>0:
+            k0 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[0]]
+        else:
+            k0 = None
         key0 = str(k0)+'-'+wl
+
         if not key0 in __Algrid:
-            s = np.interp(l, __SPE[k0]['WAVEL'], __SPE[k0]['FLAMBDA'])
+            if k0 is None:
+                s = 1
+            else:    
+                s = np.interp(l, __SPE[k0]['WAVEL'], __SPE[k0]['FLAMBDA'])
             t = photfilt2.Transmission(wl)(l)
             __Algrid[key0] = np.sum(Alambda_Exctinction(l, EB_V=1, Rv=Rv)*s*t*l)/np.sum(s*t*l)
         a0 = __Algrid[key0]*EB_V
+        
+        if k0 is None:
+            return a0
 
-        k1 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[1]]
+        if Teff>0:
+            k1 = list(__SPE.keys())[np.abs(Teff-np.array(list(__SPE.keys()))).argsort()[1]]
+        else:
+            k1 = None
         key1 = str(k1)+'-'+wl
+
         if not key1 in __Algrid:
-            s = np.interp(l, __SPE[k1]['WAVEL'], __SPE[k1]['FLAMBDA'])
+            if k1 is None:
+                s = 1
+            else:
+                s = np.interp(l, __SPE[k1]['WAVEL'], __SPE[k1]['FLAMBDA'])
             t = photfilt2.Transmission(wl)(l)
             __Algrid[key1] = np.sum(Alambda_Exctinction(l, EB_V=1, Rv=Rv)*s*t*l)/np.sum(s*t*l)
         a1 = __Algrid[key1]*EB_V
-
+        
         return a0 + (Teff-k0)*(a1-a0)/(k1-k0)
 
     if np.isscalar(wl):
