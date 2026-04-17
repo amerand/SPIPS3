@@ -10,6 +10,8 @@ An example below of several galactic Cepheids in the radius/effective temperatur
 
 ![RTdiagram](RTdiagram_template_stars.png)
 
+A full list of refereed articles published with SPIPS can be found [on ADS](https://ui.adsabs.harvard.edu/public-libraries/jFF1QnOBQvOOQNZ0RE3DHw).
+
 ## Quick Start / Example
 
 Quick Start:
